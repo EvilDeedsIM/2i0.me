@@ -1,2 +1,1 @@
-# 2i0.me
-Best site for yourself
+The best site for YourSelf
