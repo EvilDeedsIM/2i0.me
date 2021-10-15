@@ -32,6 +32,8 @@ body {
   display: flex;
   justify-content: center;
   font-size: 10px;
+  color: #fff;
+  background-color: #161618;
 }
 
 h1 {
