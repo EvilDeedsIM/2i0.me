@@ -1,16 +1,14 @@
 <template>
-  <h1>2i0.me</h1>
+  <navigation></navigation>
 
-  <app-to-35></app-to-35>
+  <router-view></router-view>
 </template>
 
 <script>
-import AppTo35 from './components/AppTo35.vue';
+import Navigation from './components/Navigation.vue';
 
 export default {
-  components: {
-    AppTo35,
-  },
+  components: { Navigation },
 };
 </script>
 
@@ -31,6 +29,7 @@ body {
   font-family: sans-serif;
   display: flex;
   justify-content: center;
+  height: 100vh;
   font-size: 10px;
   color: #fff;
   background-color: #161618;
