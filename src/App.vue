@@ -32,7 +32,7 @@ body {
   height: 100vh;
   font-size: 10px;
   color: #fff;
-  background-color: #161618;
+  background-color: #00131a;
 }
 
 h1 {
@@ -43,4 +43,13 @@ h1 {
 h2 {
   font-size: 1.5rem;
 }
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
 </style>

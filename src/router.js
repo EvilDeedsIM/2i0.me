@@ -8,6 +8,8 @@ const router = createRouter({
     { path: '/', component: AppTo35 },
     { path: '/breath', component: Breath },
   ],
+  linkActiveClass: 'active',
+  linkExactActiveClass: 'active',
 });
 
 export default router;

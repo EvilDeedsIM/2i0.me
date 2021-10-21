@@ -4,11 +4,8 @@
   <button
     class="btn"
     v-if="!flag"
-    @click="
-      toggleFlag();
-      changeText();
-      startCountdown();
-    "
+    @click="startBreathing"
+    :class="hidden ? 'hidden' : ''"
   >
     Start
   </button>
@@ -18,15 +15,24 @@
 export default {
   data() {
     return {
-      defaultTime: 2,
-      defaultApproach: 2,
+      defaultTime: 7,
+      defaultApproach: 7,
       time: 0,
       approach: 0,
       text: '',
       flag: false,
+      hidden: false,
     };
   },
   methods: {
+    startBreathing() {
+      this.hidden = true;
+      setTimeout(() => {
+        this.toggleFlag();
+        this.changeText();
+        this.startCountdown();
+      }, 1000);
+    },
     toggleFlag() {
       this.flag = !this.flag;
     },
@@ -65,22 +71,37 @@ export default {
 };
 </script>
 
-<style>
-#app {
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  align-items: center;
-  justify-content: center;
-}
-
+<style scoped>
 .text {
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
 }
 
 .countdown {
   font-size: 6rem;
+  font-weight: 700;
+}
+
+.btn {
+  padding: 0.7rem 2rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
+  cursor: pointer;
+  background: none;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 10px;
+}
+
+.btn:active {
+  font-size: 1.3rem;
+}
+
+.btn.hidden {
+  opacity: 0;
+  transition: 0.5s ease-in-out;
 }
 </style>
