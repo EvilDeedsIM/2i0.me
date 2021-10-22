@@ -1,6 +1,6 @@
 <template>
   <div class="text" v-if="flag">{{ text }}</div>
-  <div class="countdown" v-if="flag">{{ time }}</div>
+  <div class="countdown" v-if="flag">{{ `0${time}` }}</div>
   <button
     class="btn"
     v-if="!flag"
@@ -53,6 +53,9 @@ export default {
           this.approach = this.defaultApproach;
           this.changeText();
           this.toggleFlag();
+          setTimeout(() => {
+            this.hidden = false;
+          }, 100);
           return;
         }
 
@@ -74,13 +77,14 @@ export default {
 <style scoped>
 .text {
   font-size: 2rem;
+  font-weight: 600;
   margin-bottom: 1rem;
   text-transform: uppercase;
 }
 
 .countdown {
   font-size: 6rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .btn {
@@ -94,6 +98,8 @@ export default {
   color: #fff;
   border: 2px solid #fff;
   border-radius: 10px;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
 }
 
 .btn:active {

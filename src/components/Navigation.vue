@@ -31,6 +31,7 @@ export default {};
   font-size: 0.9rem;
   font-weight: 700;
   transition: 0.2s ease-in-out;
+  text-transform: uppercase;
 }
 
 .nav a::before {

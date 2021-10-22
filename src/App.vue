@@ -13,6 +13,8 @@ export default {
 </script>
 
 <style>
+@import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900);
+
 html {
   box-sizing: border-box;
 }
@@ -26,7 +28,7 @@ html {
 }
 
 body {
-  font-family: sans-serif;
+  font-family: Inter, sans-serif;
   display: flex;
   justify-content: center;
   height: 100vh;
@@ -49,7 +51,6 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
-
-
 </style>
