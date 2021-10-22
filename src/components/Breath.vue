@@ -98,6 +98,7 @@ export default {
 
 .btn:active {
   font-size: 1.3rem;
+  transition: 0.1s ease-in-out;
 }
 
 .btn.hidden {
