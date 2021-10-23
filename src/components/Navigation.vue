@@ -2,6 +2,7 @@
   <div class="nav">
     <router-link to="/">Main</router-link>
     <router-link to="/breath">Breath</router-link>
+    <router-link to="/pomodoro">Pomodoro</router-link>
   </div>
 </template>
 
