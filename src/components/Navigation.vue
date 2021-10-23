@@ -2,12 +2,9 @@
   <div class="nav">
     <router-link to="/">Main</router-link>
     <router-link to="/breath">Breath</router-link>
+    <router-link to="/focus">Focus</router-link>
   </div>
 </template>
-
-<script>
-export default {};
-</script>
 
 <style>
 .nav {
