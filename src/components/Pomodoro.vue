@@ -36,7 +36,7 @@
     <button class="btn btn-play-pause" @click="playPause">
       {{ runFlag ? 'Pause' : pauseFlag ? 'Continue' : 'Start' }}
     </button>
-    <button class="btn btn-stop" @click="stop">Stop</button>
+    <button class="btn btn-stop" @click="stopBtn">Stop</button>
   </div>
 </template>
 
@@ -68,6 +68,12 @@ export default {
 
       clearInterval(this.interval);
       this.runFlag = false;
+    },
+
+    stopBtn() {
+      const stop = confirm('Are you sure?');
+      console.log(stop);
+      if (stop) this.stop();
     },
 
     stop() {
@@ -114,8 +120,6 @@ export default {
         this.timeToGo--;
         this.minutesToGo = Math.floor(this.timeToGo / this.oneMinute);
         this.secondsToGo = this.timeToGo % this.oneMinute;
-        // console.log(this.timeToGo);
-        // console.log('min:', this.minutesToGo, 'sec:', this.secondsToGo);
         return;
       }
 

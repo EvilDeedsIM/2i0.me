@@ -1,33 +1,41 @@
 <template>
-  <div class="dot" :style="style"></div>
-  <label class="label" for="size">Size</label>
-  <input
-    class="range"
-    id="size"
-    type="range"
-    min="10"
-    max="100"
-    step="10"
-    v-model="size"
-  />
-
-  <label class="label" for="color">Color</label>
-  <input
-    class="range"
-    id="color"
-    type="range"
-    min="0"
-    max="27"
-    step="1"
-    v-model="colorNum"
-  />
-  <button class="btn">Start</button>
+  <div class="main" :class="hiddenMain" v-if="!flag">
+    <div class="dot" :style="style"></div>
+    <label class="label" for="size">Size</label>
+    <input
+      class="range"
+      id="size"
+      type="range"
+      min="10"
+      max="100"
+      step="10"
+      v-model="size"
+    />
+    <label class="label" for="color">Color</label>
+    <input
+      class="range"
+      id="color"
+      type="range"
+      min="0"
+      max="27"
+      step="1"
+      v-model="colorNum"
+    />
+    <button class="btn" @click="start">Start</button>
+  </div>
+  <div class="dot" :class="hiddenDot" :style="style" v-else></div>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      timeInMinutes: 1,
+      time: 0,
+      interval: null,
+      flag: false,
+      hiddenMain: '',
+      hiddenDot: 'hidden',
       size: 50,
       colorNum: 0,
       colors: [
@@ -62,6 +70,42 @@ export default {
       ],
     };
   },
+  methods: {
+    start() {
+      this.time = this.timeInMinutes * 10;
+      this.hiddenMain = 'hidden';
+
+      setTimeout(() => {
+        this.flag = !this.flag;
+
+        this.interval = setInterval(() => {
+          if (this.time > 0) {
+            this.time--;
+          }
+          console.log(this.time);
+          if (this.time === 0) {
+            this.endGame();
+            clearInterval(this.interval);
+          }
+        }, 1000);
+
+        setTimeout(() => {
+          this.hiddenDot = '';
+        }, 100);
+      }, 600);
+    },
+    endGame() {
+      this.hiddenDot = 'hidden';
+      this.time = this.timeInMinutes;
+
+      setTimeout(() => {
+        this.flag = !this.flag;
+        setTimeout(() => {
+          this.hiddenMain = '';
+        }, 100);
+      }, 600);
+    },
+  },
   computed: {
     style() {
       return `background-color:${this.colors[this.colorNum]}; width: ${
@@ -73,13 +117,39 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 1;
+  transition: 0.3s ease-in-out;
+}
+
+.main.hidden {
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+
 .dot {
   border-radius: 100%;
   margin-bottom: 2rem;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out, 0.2s ease-in-out;
+}
+
+.dot.hidden {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .range {
   margin-bottom: 1rem;
+  width: 100%;
+}
+
+.range:last-of-type {
+  margin-bottom: 2rem;
 }
 
 .label {
