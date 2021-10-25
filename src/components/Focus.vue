@@ -1,4 +1,6 @@
 <template>
+  <div class="border-top-right" :style="borderTopRight"></div>
+  <div class="border-bottom-left" :style="borderBottomLeft"></div>
   <div class="main" :class="hiddenMain" v-if="!flag">
     <div class="dot" :style="style"></div>
     <label class="label" for="size">Size</label>
@@ -30,6 +32,12 @@
 export default {
   data() {
     return {
+      borderInterval: null,
+      left: 100,
+      top: 100,
+      right: 100,
+      bottom: 100,
+
       timeInMinutes: 1,
       time: 0,
       interval: null,
@@ -72,6 +80,13 @@ export default {
   },
   methods: {
     start() {
+      this.borderInterval = setInterval(() => {
+        if (this.left > 0) this.left--;
+        if (this.left === 0 && this.top > 0) this.top--;
+        if (this.top === 0 && this.right > 0) this.right--;
+        if (this.right === 0 && this.bottom > 0) this.bottom--;
+      }, 30);
+
       this.time = this.timeInMinutes * 10;
       this.hiddenMain = 'hidden';
 
@@ -112,16 +127,63 @@ export default {
         this.size
       }px; height: ${this.size}px`;
     },
+    borderBottomLeft() {
+      if (this.left === 100 && this.top === 100) {
+        return `
+            left: calc(${this.left}% - 6px);
+            top: calc(${this.top}% - 6px);
+          `;
+      }
+
+      if (this.top === 100) {
+        return `
+            left: calc(${this.left}%);
+            top: calc(${this.top}% - 6px);
+          `;
+      }
+
+      return `
+            left: calc(${this.left}%);
+            top: calc(${this.top}%);
+          `;
+    },
+    borderTopRight() {
+      return `
+            right: calc(${this.right}%);
+            bottom: calc(${this.bottom}%);
+          `;
+    },
   },
 };
 </script>
 
 <style scoped>
+.border-bottom-left {
+  position: absolute;
+  border-bottom: 6px solid #fff;
+  border-left: 6px solid #fff;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+}
+
+.border-top-right {
+  position: absolute;
+  border-top: 6px solid #fff;
+  border-right: 6px solid #fff;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+
 .main {
-  width: 70%;
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   opacity: 1;
   transition: 0.3s ease-in-out;
 }
@@ -146,6 +208,7 @@ export default {
 .range {
   margin-bottom: 1rem;
   width: 100%;
+  max-width: 300px;
 }
 
 .range:last-of-type {
