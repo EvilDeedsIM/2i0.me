@@ -47,13 +47,13 @@ export default {
   data() {
     return {
       defaultMinutes: 20,
-      minutesToGo: 20,
+      minutesToGo: 1,
       secondsToGo: 0,
       timeToGo: 0,
       runFlag: false,
       pauseFlag: false,
       interval: null,
-      oneMinute: 60,
+      oneMinute: 5,
     };
   },
   methods: {
@@ -122,8 +122,7 @@ export default {
         this.secondsToGo = this.timeToGo % this.oneMinute;
         return;
       }
-
-      this.stop();
+      clearInterval(this.interval);
     },
 
     startInterval() {
