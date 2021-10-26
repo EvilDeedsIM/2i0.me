@@ -48,14 +48,14 @@ export default {
     return {
       title: '2i0.me',
       defaultMinutes: 20,
-      minutesToGo: 1,
+      minutesToGo: 20,
+      oneMinute: 60,
       secondsToGo: 0,
       timeToGo: 0,
       runFlag: false,
       pauseFlag: false,
       interval: null,
       titleInterval: null,
-      oneMinute: 5,
       audioAlarm: null,
     };
   },
