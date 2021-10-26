@@ -8,14 +8,6 @@
 import Navigation from './components/Navigation.vue';
 
 export default {
-  mounted() {
-    setTimeout(() => {
-      window.scroll({
-        top: 100,
-        behavior: 'smooth',
-      });
-    }, 2000);
-  },
   components: { Navigation },
 };
 </script>
