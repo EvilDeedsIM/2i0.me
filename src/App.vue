@@ -9,10 +9,12 @@ import Navigation from './components/Navigation.vue';
 
 export default {
   mounted() {
-    window.scroll({
-      top: 100,
-      behavior: 'smooth',
-    });
+    setTimeout(() => {
+      window.scroll({
+        top: 100,
+        behavior: 'smooth',
+      });
+    }, 2000);
   },
   components: { Navigation },
 };
