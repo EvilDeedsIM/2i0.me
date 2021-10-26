@@ -1,6 +1,6 @@
 <template>
-  <div class="border-top-right" :style="borderTopRight"></div>
-  <div class="border-bottom-left" :style="borderBottomLeft"></div>
+  <!-- <div class="border-top-right" :style="borderTopRight"></div>
+  <div class="border-bottom-left" :style="borderBottomLeft"></div> -->
   <div class="main" :class="hiddenMain" v-if="!flag">
     <div class="dot" :style="style"></div>
     <label class="label" for="size">Size</label>
@@ -23,22 +23,38 @@
       step="1"
       v-model="colorNum"
     />
+    <label class="label" for="time"
+      >Time: <strong>{{ timeInMinutes }}</strong> min</label
+    >
+    <input
+      class="range"
+      id="time"
+      type="range"
+      min="1"
+      max="30"
+      step="1"
+      v-model="timeInMinutes"
+    />
     <button class="btn" @click="start">Start</button>
   </div>
-  <div class="dot" :class="hiddenDot" :style="style" v-else></div>
+  <template v-else>
+    <div class="dot" :class="hiddenDot" :style="style"></div>
+    <progress
+      class="progress"
+      id="progress"
+      min="0"
+      max="100"
+      :value="value"
+    ></progress>
+  </template>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      borderInterval: null,
-      left: 100,
-      top: 100,
-      right: 100,
-      bottom: 100,
-
-      timeInMinutes: 1,
+      value: 0,
+      timeInMinutes: 5,
       time: 0,
       interval: null,
       flag: false,
@@ -80,14 +96,7 @@ export default {
   },
   methods: {
     start() {
-      this.borderInterval = setInterval(() => {
-        if (this.left > 0) this.left--;
-        if (this.left === 0 && this.top > 0) this.top--;
-        if (this.top === 0 && this.right > 0) this.right--;
-        if (this.right === 0 && this.bottom > 0) this.bottom--;
-      }, 30);
-
-      this.time = this.timeInMinutes * 10;
+      this.time = this.timeInMinutes * 60;
       this.hiddenMain = 'hidden';
 
       setTimeout(() => {
@@ -96,8 +105,9 @@ export default {
         this.interval = setInterval(() => {
           if (this.time > 0) {
             this.time--;
+            this.changeValue();
           }
-          console.log(this.time);
+          // console.log(this.time);
           if (this.time === 0) {
             this.endGame();
             clearInterval(this.interval);
@@ -120,6 +130,9 @@ export default {
         }, 100);
       }, 600);
     },
+    changeValue() {
+      this.value = 100 - Math.floor((this.time / (this.timeInMinutes * 60)) * 100);
+    },
   },
   computed: {
     style() {
@@ -127,37 +140,26 @@ export default {
         this.size
       }px; height: ${this.size}px`;
     },
-    borderBottomLeft() {
-      if (this.left === 100 && this.top === 100) {
-        return `
-            left: calc(${this.left}% - 6px);
-            top: calc(${this.top}% - 6px);
-          `;
-      }
-
-      if (this.top === 100) {
-        return `
-            left: calc(${this.left}%);
-            top: calc(${this.top}% - 6px);
-          `;
-      }
-
-      return `
-            left: calc(${this.left}%);
-            top: calc(${this.top}%);
-          `;
-    },
-    borderTopRight() {
-      return `
-            right: calc(${this.right}%);
-            bottom: calc(${this.bottom}%);
-          `;
-    },
   },
 };
 </script>
 
 <style scoped>
+strong {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0.1;
+  margin: 0;
+  padding: 0;
+}
+
 .border-bottom-left {
   position: absolute;
   border-bottom: 6px solid #fff;
@@ -165,6 +167,7 @@ export default {
   right: 0;
   bottom: 0;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .border-top-right {
@@ -174,6 +177,7 @@ export default {
   top: 0;
   left: 0;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .main {
@@ -186,6 +190,7 @@ export default {
   justify-content: center;
   opacity: 1;
   transition: 0.3s ease-in-out;
+  overflow: hidden;
 }
 
 .main.hidden {

@@ -35,6 +35,7 @@ body {
   font-size: 10px;
   color: #fff;
   background-color: #00131a;
+  overflow: hidden;
 }
 
 h1 {
