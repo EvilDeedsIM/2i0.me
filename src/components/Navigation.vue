@@ -19,6 +19,7 @@
   gap: 2rem;
   padding: 1rem 0;
   margin-bottom: 1rem;
+  z-index: 2;
 }
 
 .nav a {

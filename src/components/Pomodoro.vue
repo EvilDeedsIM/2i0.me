@@ -46,6 +46,7 @@ import { Icon } from '@iconify/vue';
 export default {
   data() {
     return {
+      title: '2i0.me',
       defaultMinutes: 20,
       minutesToGo: 1,
       secondsToGo: 0,
@@ -53,7 +54,9 @@ export default {
       runFlag: false,
       pauseFlag: false,
       interval: null,
+      titleInterval: null,
       oneMinute: 5,
+      audioAlarm: null,
     };
   },
   methods: {
@@ -71,13 +74,22 @@ export default {
     },
 
     stopBtn() {
-      const stop = confirm('Are you sure?');
-      console.log(stop);
-      if (stop) this.stop();
+      if (this.timeToGo > 0) {
+        const stop = confirm('Are you sure?');
+        if (stop) this.stop();
+        return;
+      }
+
+      this.stop();
     },
 
     stop() {
+      if (this.audioAlarm) this.stopAudio();
+
       clearInterval(this.interval);
+      clearInterval(this.titleInterval);
+      document.title = this.title;
+
       this.runFlag = false;
       this.pauseFlag = false;
       this.minutesToGo = this.defaultMinutes;
@@ -120,13 +132,44 @@ export default {
         this.timeToGo--;
         this.minutesToGo = Math.floor(this.timeToGo / this.oneMinute);
         this.secondsToGo = this.timeToGo % this.oneMinute;
+        document.title = `${this.minutes}:${this.seconds}`;
         return;
       }
+
+      this.playAudio();
+      this.startTitleInterval();
       clearInterval(this.interval);
     },
 
     startInterval() {
       this.interval = setInterval(this.reduceTimeToGo, 1000);
+    },
+
+    startTitleInterval() {
+      this.titleInterval = setInterval(() => {
+        if (document.title === '00:00') {
+          document.title = '--:--';
+        } else {
+          document.title = '00:00';
+        }
+      }, 1000);
+    },
+
+    playAudioListener() {
+      setTimeout(() => {
+        this.audioAlarm.play();
+      }, 500);
+    },
+
+    playAudio() {
+      this.audioAlarm = new Audio('/public/audio/piano_alarm.mp3');
+      this.audioAlarm.play();
+      this.audioAlarm.addEventListener('ended', this.playAudioListener);
+    },
+
+    stopAudio() {
+      this.audioAlarm.pause();
+      this.audioAlarm.removeEventListener('ended', this.playAudioListener);
     },
   },
   computed: {

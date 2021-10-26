@@ -8,6 +8,12 @@
 import Navigation from './components/Navigation.vue';
 
 export default {
+  created() {
+    window.scroll({
+      top: 100,
+      behavior: 'smooth',
+    });
+  },
   components: { Navigation },
 };
 </script>
