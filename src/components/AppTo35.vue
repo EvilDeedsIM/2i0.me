@@ -68,6 +68,7 @@ span {
   display: block;
   font-size: 1rem;
   font-weight: 700;
+  color: ;
 }
 
 h2 {

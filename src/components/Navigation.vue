@@ -24,7 +24,7 @@
 
 .nav a {
   position: relative;
-  color: #fff;
+  color: var(--white);
   text-transform: none;
   text-decoration: none;
   font-size: 0.9rem;
@@ -40,11 +40,11 @@
   left: 0;
   width: 100%;
   height: 1px;
-  background-color: #fff;
+  background-color: var(--white);
 }
 
 .nav a.active {
-  border: 1px solid #fff;
+  border: 1px solid var(--white);
   border-radius: 5px;
   padding: 0 5px;
   text-decoration: none;

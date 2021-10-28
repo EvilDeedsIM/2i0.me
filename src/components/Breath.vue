@@ -95,8 +95,8 @@ export default {
   letter-spacing: 0.3rem;
   cursor: pointer;
   background: none;
-  color: #fff;
-  border: 2px solid #fff;
+  color:  var(--white);
+  border: 2px solid var(--white);
   border-radius: 10px;
   opacity: 1;
   transition: 0.5s ease-in-out;

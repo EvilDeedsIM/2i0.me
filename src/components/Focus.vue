@@ -19,7 +19,7 @@
       id="color"
       type="range"
       min="0"
-      max="27"
+      max="26"
       step="1"
       v-model="colorNum"
     />
@@ -63,7 +63,7 @@ export default {
       size: 50,
       colorNum: 0,
       colors: [
-        '#fff',
+        '#eeeee0',
         '#ff4d4d',
         '#ff794d',
         '#ffa64d',
@@ -89,8 +89,7 @@ export default {
         '#ff4dd2',
         '#ff4da6',
         '#ff4d79',
-        '#ff4d4d',
-        '#0d0d0d', // 28 colors
+        '#ff4d4d', // 27 colors
       ],
     };
   },
@@ -131,7 +130,8 @@ export default {
       }, 600);
     },
     changeValue() {
-      this.value = 100 - Math.floor((this.time / (this.timeInMinutes * 60)) * 100);
+      this.value =
+        100 - Math.floor((this.time / (this.timeInMinutes * 60)) * 100);
     },
   },
   computed: {
@@ -150,6 +150,72 @@ strong {
   font-size: 1.1rem;
 }
 
+input[type='range'] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+  margin: 10px 0;
+}
+
+input[type='range']:focus {
+  outline: none;
+}
+
+/* Chrome & Opera */
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -5px;
+  border: 1px solid var(--black);
+  border-radius: 4px;
+  box-shadow: 0 0 2px var(--white);
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: var(--blue);
+  border: 1px solid var(--aqua);
+  border-radius: 2px;
+  box-shadow: 0 0 3px var(--blue);
+}
+
+input[type='range']:focus::-webkit-slider-runnable-track {
+  background: var(--light-blue);
+  box-shadow: 0 0 6px var(--blue);
+}
+
+/* Firefox */
+input[type='range']::-moz-range-thumb {
+  height: 20px;
+  width: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  border: 1px solid var(--black);
+  border-radius: 4px;
+  box-shadow: 0 0 2px var(--white);
+}
+
+input[type='range']::-moz-range-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: var(--blue);
+  border: 1px solid var(--aqua);
+  border-radius: 2px;
+  box-shadow: 0 0 3px var(--blue);
+}
+
+input[type='range']:focus::-moz-range-track {
+  background: var(--light-blue);
+  box-shadow: 0 0 6px var(--blue);
+}
+
+/* ------------------------------------------------------------------------------- */
 .progress {
   position: absolute;
   bottom: 0;
@@ -162,8 +228,8 @@ strong {
 
 .border-bottom-left {
   position: absolute;
-  border-bottom: 6px solid #fff;
-  border-left: 6px solid #fff;
+  border-bottom: 6px solid var(--white);
+  border-left: 6px solid var(--white);
   right: 0;
   bottom: 0;
   box-sizing: border-box;
@@ -172,8 +238,8 @@ strong {
 
 .border-top-right {
   position: absolute;
-  border-top: 6px solid #fff;
-  border-right: 6px solid #fff;
+  border-top: 6px solid var(--white);
+  border-right: 6px solid var(--white);
   top: 0;
   left: 0;
   box-sizing: border-box;
@@ -234,8 +300,8 @@ strong {
   letter-spacing: 0.3rem;
   cursor: pointer;
   background: none;
-  color: #fff;
-  border: 2px solid #fff;
+  color: var(--white);
+  border: 2px solid var(--white);
   border-radius: 10px;
   opacity: 1;
   transition: 0.5s ease-in-out;
