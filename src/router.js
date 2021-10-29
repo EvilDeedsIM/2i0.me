@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Breath from './components/Breath.vue';
 import AppTo35 from './components/AppTo35.vue';
-import Pomodoro from './components/Pomodoro.vue';
+import Pomodoro from './components/Timer.vue';
 import Focus from './components/Focus.vue';
 
 const router = createRouter({

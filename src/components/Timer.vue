@@ -1,4 +1,8 @@
 <template>
+  <div class="total">
+    <p class="text-right">Timers: {{ timers }}&nbsp;|&nbsp;</p>
+    <p>Total time: {{ totalTime }}</p>
+  </div>
   <div class="time">
     <div class="minutes-div">
       <Icon
@@ -42,14 +46,15 @@
 
 <script>
 import { Icon } from '@iconify/vue';
+import axios from 'axios';
 
 export default {
   data() {
     return {
       title: '2i0.me',
-      defaultMinutes: 20,
-      minutesToGo: 20,
-      oneMinute: 60,
+      defaultMinutes: 2,
+      minutesToGo: 3,
+      oneMinute: 3,
       secondsToGo: 0,
       timeToGo: 0,
       runFlag: false,
@@ -57,9 +62,35 @@ export default {
       interval: null,
       titleInterval: null,
       audioAlarm: null,
+      timers: 0,
+      totalTime: 0,
+      timersUrl:
+        'https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/timers.json',
     };
   },
+  created() {
+    this.loadTimersCount();
+  },
   methods: {
+    async saveTimer() {
+      const response = await axios.post(this.timersUrl, {
+        title: 'timer:' + Date.now(),
+        time: this.defaultMinutes,
+      });
+      this.loadTimersCount();
+    },
+
+    async loadTimersCount() {
+      const { data } = await axios.get(this.timersUrl);
+      if (data) {
+        const allTimers = Object.values(data);
+
+        this.totalTime = allTimers.reduce((acc, obj) => acc + obj.time, 0);
+
+        this.timers = allTimers.length;
+      }
+    },
+
     playPause() {
       if (!this.runFlag) {
         this.timeToGo = this.minutesToGo * this.oneMinute + this.secondsToGo;
@@ -136,6 +167,8 @@ export default {
         return;
       }
 
+      this.saveTimer();
+
       this.playAudio();
       this.startTitleInterval();
       clearInterval(this.interval);
@@ -162,7 +195,7 @@ export default {
     },
 
     playAudio() {
-      this.audioAlarm = new Audio('/public/audio/piano_alarm.mp3');
+      this.audioAlarm = new Audio('/audio/piano_alarm.mp3');
       this.audioAlarm.play();
       this.audioAlarm.addEventListener('ended', this.playAudioListener);
     },
@@ -190,6 +223,17 @@ export default {
 </script>
 
 <style scoped>
+.total {
+  display: flex;
+  justify-content: center;
+  /* gap: 1rem; */
+  margin-bottom: 4rem;
+}
+
+.text-right {
+  text-align: right;
+}
+
 .time {
   position: relative;
   display: flex;
