@@ -41,9 +41,9 @@ export default {
     return {
       title: '2i0.me',
 
-      defaultMinutes: 1,
-      minutesToGo: 1,
-      oneMinute: 2,
+      defaultMinutes: 20,
+      minutesToGo: 20,
+      oneMinute: 60,
       timeToGo: null,
 
       runFlag: false,
