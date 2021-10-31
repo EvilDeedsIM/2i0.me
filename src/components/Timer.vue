@@ -9,36 +9,24 @@
         class="icon icon-min-up"
         icon="ci:chevron-duo-up"
         @click="addTime('min')"
-        v-if="!pauseFlag"
+        v-if="!hidden"
       />
-      <span class="minutes">{{ minutes }}</span>
+      <span class="minutes">{{ time.min }}</span>
       <Icon
         class="icon icon-min-down"
         icon="ci:chevron-duo-down"
         @click="removeTime('min')"
-        v-if="!pauseFlag"
+        v-if="!hidden"
       />
     </div>
-    <span>:</span>
-    <div class="seconds-div">
-      <Icon
-        class="icon icon-sec-up"
-        icon="ci:chevron-duo-up"
-        @click="addTime('sec')"
-        v-if="!pauseFlag"
-      />
-      <span class="seconds">{{ seconds }}</span>
-      <Icon
-        class="icon icon-sec-down"
-        icon="ci:chevron-duo-down"
-        @click="removeTime('sec')"
-        v-if="!pauseFlag"
-      />
+    <span v-if="runFlag || pauseFlag">:</span>
+    <div class="seconds-div" v-if="runFlag || pauseFlag">
+      <span class="seconds">{{ time.sec }}</span>
     </div>
   </div>
   <div class="buttons">
     <button class="btn btn-play-pause" @click="playPause">
-      {{ runFlag ? 'Pause' : pauseFlag ? 'Continue' : 'Start' }}
+      {{ playPauseButtonText }}
     </button>
     <button class="btn btn-stop" @click="stopBtn">Stop</button>
   </div>
@@ -52,16 +40,21 @@ export default {
   data() {
     return {
       title: '2i0.me',
-      defaultMinutes: 2,
-      minutesToGo: 3,
-      oneMinute: 3,
-      secondsToGo: 0,
-      timeToGo: 0,
+
+      defaultMinutes: 1,
+      minutesToGo: 1,
+      oneMinute: 2,
+      timeToGo: null,
+
       runFlag: false,
       pauseFlag: false,
+      hidden: false,
+
       interval: null,
-      titleInterval: null,
+      titleFaviconInterval: null,
+
       audioAlarm: null,
+
       timers: 0,
       totalTime: 0,
       timersUrl:
@@ -75,7 +68,7 @@ export default {
     async saveTimer() {
       const response = await axios.post(this.timersUrl, {
         title: 'timer:' + Date.now(),
-        time: this.defaultMinutes,
+        time: this.minutesToGo,
       });
       this.loadTimersCount();
     },
@@ -92,15 +85,29 @@ export default {
     },
 
     playPause() {
+      if (this.timeToGo === 0) {
+        this.timeToGo = this.minutesToGo * this.oneMinute;
+
+        if (this.audioAlarm) this.stopAudio();
+
+        clearInterval(this.titleFaviconInterval);
+        this.startInterval();
+
+        document.querySelector("link[rel*='icon']").href = '/favicon-blue.ico';
+        return;
+      }
+
       if (!this.runFlag) {
-        this.timeToGo = this.minutesToGo * this.oneMinute + this.secondsToGo;
+        this.timeToGo = this.minutesToGo * this.oneMinute;
         this.runFlag = true;
-        this.pauseFlag = true;
+        this.pauseFlag = false;
+        this.hidden = true;
         this.startInterval();
         return;
       }
 
       clearInterval(this.interval);
+      this.pauseFlag = true;
       this.runFlag = false;
     },
 
@@ -118,59 +125,44 @@ export default {
       if (this.audioAlarm) this.stopAudio();
 
       clearInterval(this.interval);
-      clearInterval(this.titleInterval);
+      clearInterval(this.titleFaviconInterval);
       document.title = this.title;
 
       this.runFlag = false;
       this.pauseFlag = false;
       this.minutesToGo = this.defaultMinutes;
-      this.secondsToGo = 0;
+      this.hidden = false;
+
+      this.timeToGo = null;
+
+      document.querySelector("link[rel*='icon']").href = '/favicon-blue.ico';
     },
 
     addTime(x) {
       if (x === 'min') {
         if (this.minutesToGo < 60) this.minutesToGo++;
-        if (this.minutesToGo === 60) this.secondsToGo = 0;
-      }
-
-      if (x === 'sec') {
-        if (this.secondsToGo < 60 && this.minutesToGo < 60) this.secondsToGo++;
-        if (this.secondsToGo === 60 && this.minutesToGo < 60) {
-          this.secondsToGo = 0;
-          this.minutesToGo++;
-        }
       }
     },
 
     removeTime(x) {
       if (x === 'min') {
-        if (this.minutesToGo === 1) this.secondsToGo = 0;
         if (this.minutesToGo > 1) this.minutesToGo--;
-      }
-
-      if (x === 'sec') {
-        if (this.secondsToGo === 0 && this.minutesToGo > 1) {
-          this.secondsToGo = 59;
-          this.minutesToGo--;
-          return;
-        }
-        if (this.secondsToGo > 0) this.secondsToGo--;
       }
     },
 
     reduceTimeToGo() {
       if (this.timeToGo > 0) {
         this.timeToGo--;
-        this.minutesToGo = Math.floor(this.timeToGo / this.oneMinute);
-        this.secondsToGo = this.timeToGo % this.oneMinute;
-        document.title = `${this.minutes}:${this.seconds}`;
+        const min = Math.floor(this.timeToGo / this.oneMinute);
+        const sec = this.timeToGo % this.oneMinute;
+        document.title = `${min}:${sec}`;
         return;
       }
 
       this.saveTimer();
 
       this.playAudio();
-      this.startTitleInterval();
+      this.startTitleFaviconInterval();
       clearInterval(this.interval);
     },
 
@@ -178,14 +170,26 @@ export default {
       this.interval = setInterval(this.reduceTimeToGo, 1000);
     },
 
-    startTitleInterval() {
-      this.titleInterval = setInterval(() => {
+    startTitleFaviconInterval() {
+      this.titleFaviconInterval = setInterval(() => {
+        this.changeFavicon();
+
         if (document.title === '00:00') {
           document.title = '--:--';
         } else {
           document.title = '00:00';
         }
       }, 1000);
+    },
+
+    changeFavicon() {
+      const link = document.querySelector("link[rel*='icon']");
+      const linkHref = link.href.split('/').pop();
+      if (linkHref === 'favicon-blue.ico') {
+        link.href = '/favicon-orange.ico';
+      } else {
+        link.href = '/favicon-blue.ico';
+      }
     },
 
     playAudioListener() {
@@ -206,14 +210,38 @@ export default {
     },
   },
   computed: {
-    minutes() {
-      if (this.minutesToGo < 10) return `0${this.minutesToGo}`;
-      return this.minutesToGo;
+    time() {
+      let min = Math.floor(this.timeToGo / this.oneMinute);
+      let sec = this.timeToGo % this.oneMinute;
+
+      if (this.runFlag || this.pauseFlag) {
+        let min = Math.floor(this.timeToGo / this.oneMinute);
+        let sec = this.timeToGo % this.oneMinute;
+
+        if (min < 10) min = `0${min}`;
+        if (sec < 10) sec = `0${sec}`;
+
+        return {
+          min,
+          sec,
+        };
+      }
+
+      if (this.minutesToGo < 10) {
+        return { min: `0${this.minutesToGo}` };
+      } else {
+        return { min: this.minutesToGo };
+      }
     },
 
-    seconds() {
-      if (this.secondsToGo < 10) return `0${this.secondsToGo}`;
-      return this.secondsToGo;
+    playPauseButtonText() {
+      if (this.timeToGo === 0) return 'Restart';
+
+      if (this.runFlag) return 'Pause';
+
+      if (this.pauseFlag) return 'Continue';
+
+      return 'Start';
     },
   },
   components: {
@@ -226,7 +254,6 @@ export default {
 .total {
   display: flex;
   justify-content: center;
-  /* gap: 1rem; */
   margin-bottom: 4rem;
 }
 

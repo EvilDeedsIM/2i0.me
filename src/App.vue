@@ -18,7 +18,7 @@ export default {
 :root {
   --black: #0d0d0d;
   --dark-blue: #00131a;
-  --blue: dodgerblue;
+  --blue: #1e90ff;
   --light-blue: #28a9ff;
   --aqua: #14dece;
   --light-orange: #ffb638;
