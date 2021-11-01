@@ -4,6 +4,7 @@
     <router-link to="/breath">Breath</router-link>
     <router-link to="/focus">Focus</router-link>
     <router-link to="/timer">Timer</router-link>
+    <router-link to="/reactiongame">Reaction Game</router-link>
   </div>
 </template>
 
