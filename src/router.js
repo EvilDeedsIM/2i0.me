@@ -5,6 +5,7 @@ import Timer from './components/Timer.vue';
 import Focus from './components/Focus.vue';
 import WorkTimer from './components/WorkTimer.vue';
 import Autentification from './components/Autentification.vue';
+import ReactionGame from './components/ReactionGame.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,6 +16,7 @@ const router = createRouter({
     { path: '/focus', component: Focus },
     { path: '/worktimer', component: WorkTimer },
     { path: '/login', component: Autentification },
+    { path: '/reactiongame', component: ReactionGame },
   ],
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',

@@ -6,6 +6,7 @@
     <router-link to="/focus">Focus</router-link>
     <router-link to="/timer">Timer</router-link>
     <router-link to="/worktimer">Work Timer</router-link>
+    <router-link to="/reactiongame">Reaction Game</router-link>
   </div>
 </template>
 
