@@ -1,9 +1,11 @@
 <template>
   <div class="nav">
+    <router-link to="/login">Login</router-link>
     <router-link to="/">Main</router-link>
     <router-link to="/breath">Breath</router-link>
     <router-link to="/focus">Focus</router-link>
     <router-link to="/timer">Timer</router-link>
+    <router-link to="/worktimer">Work Timer</router-link>
   </div>
 </template>
 

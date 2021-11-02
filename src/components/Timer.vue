@@ -30,6 +30,33 @@
     </button>
     <button class="btn btn-stop" @click="stopBtn">Stop</button>
   </div>
+  <div class="audio">
+    <h3 class="audio-title">Sound</h3>
+    <div class="audio-choose">
+      <div>
+        <label for="audio-on">on</label>
+        <input
+          type="radio"
+          id="audio-on"
+          name="audio"
+          value="on"
+          :checked="audioFlag"
+          @change="turnAudio"
+        />
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="audio-off"
+          name="audio"
+          value="off"
+          :checked="!audioFlag"
+          @change="turnAudio"
+        />
+        <label for="audio-off">off</label>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -41,14 +68,15 @@ export default {
     return {
       title: '2i0.me',
 
-      defaultMinutes: 20,
-      minutesToGo: 20,
+      defaultMinutes: 25,
+      minutesToGo: 25,
       oneMinute: 60,
       timeToGo: null,
 
       runFlag: false,
       pauseFlag: false,
       hidden: false,
+      audioFlag: false,
 
       interval: null,
       titleFaviconInterval: null,
@@ -159,9 +187,11 @@ export default {
         return;
       }
 
-      this.saveTimer();
+      if (this.audioFlag) {
+        this.playAudio();
+      }
 
-      this.playAudio();
+      this.saveTimer();
       this.startTitleFaviconInterval();
       clearInterval(this.interval);
     },
@@ -207,6 +237,13 @@ export default {
     stopAudio() {
       this.audioAlarm.pause();
       this.audioAlarm.removeEventListener('ended', this.playAudioListener);
+    },
+
+    turnAudio(e) {
+      const condition = e.target.value;
+      if (condition === 'on') this.audioFlag = true;
+      if (condition === 'off') this.audioFlag = false;
+      console.log(this.audioFlag);
     },
   },
   computed: {
@@ -324,6 +361,7 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 2rem;
+  margin-bottom: 1.6rem;
 }
 
 .btn {
@@ -334,5 +372,35 @@ export default {
   font-size: 0.8rem;
   font-weight: 600;
   font-family: Inter, sans-serif;
+}
+
+.audio {
+  display: flex;
+  gap: 0.4rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.audio-title {
+  font-size: 1.5rem;
+}
+
+.audio-choose {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.7rem;
+}
+
+.audio-choose,
+.audio-choose label,
+.audio-choose input {
+  cursor: pointer;
+}
+
+.audio-choose div {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
 }
 </style>
