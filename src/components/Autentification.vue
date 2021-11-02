@@ -1,5 +1,8 @@
 <template>
-  <h3 v-if="isUser">Is User</h3>
+  <h3 class="registered-user" v-if="registeredUser">This nickname is taken</h3>
+  <h3 class="logged-in" :style="`color:${loginMessageColor}`" v-if="loggedIn">
+    {{ loginText }}
+  </h3>
   <form method="get" class="form" id="login-form" v-if="loginFlag">
     <h1>Login</h1>
     <input
@@ -14,7 +17,7 @@
       placeholder="password"
       v-model="password"
     />
-    <button type="submit" class="btn" @click.prevent="postUser">Login</button>
+    <button type="submit" class="btn" @click.prevent="loginUser">Login</button>
     <button class="change-btn" @click.prevent="changeLoginFlag">
       Register
     </button>
@@ -39,7 +42,7 @@
       placeholder="password repeat"
       v-model="secondPassword"
     />
-    <button type="submit" class="btn" @click.prevent="postUser">
+    <button type="submit" class="btn" @click.prevent="registerUser">
       Register
     </button>
     <button class="change-btn" @click="changeLoginFlag">Login</button>
@@ -52,8 +55,12 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      isUser: false,
+      registeredUser: false,
+      loggedIn: false,
       loginFlag: true,
+
+      loginText: '',
+      loginMessageColor: 'gg',
 
       userName: null,
       password: null,
@@ -61,25 +68,60 @@ export default {
       URL: 'https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/users.json',
     };
   },
-  mounted() {},
+
+  async mounted() {
+    const name = localStorage.getItem('username');
+    const psw = localStorage.getItem('password');
+
+    if (name && psw) {
+      const response = await axios.get(this.URL);
+      const user = Object.values(response.data).filter(
+        (item) => item.userName === name && item.password === psw
+      )[0];
+
+      if (user) {
+        this.loginMessageColor = 'var(--green)';
+        this.loginText = 'You are in';
+        this.loggedIn = true;
+
+        this.$emit('loginTextNew', 'logout');
+
+        setTimeout(() => {
+          this.$router.push('/');
+        }, 1500);
+      }
+    }
+  },
+
   methods: {
-    async postUser() {
+    async loginUser() {
       if (this.loginFlag) {
         if (this.userName && this.password) {
           const response = await axios.get(this.URL);
           const user = Object.values(response.data).filter(
             (item) => item.userName === this.userName
           )[0];
+          if (user.password === this.password) {
+            this.loginMessageColor = 'var(--green)';
+            this.loginText = 'You are in';
+            localStorage.setItem('username', this.userName);
+            localStorage.setItem('password', this.password);
 
-          console.log(user, this.userName);
-          if (user.userName === this.userName) {
-            console.log('Already registered');
-            this.isUser = true;
-            return;
+            this.$emit('loginTextNew', 'logout');
+
+            setTimeout(() => {
+              this.$router.push('/');
+            }, 1500);
+          } else {
+            this.loginMessageColor = 'var(--red)';
+            this.loginText = 'Wrong password';
           }
+          this.loggedIn = true;
         }
       }
+    },
 
+    async registerUser() {
       if (!this.loginFlag) {
         if (
           this.userName &&
@@ -87,13 +129,11 @@ export default {
           this.secondPassword &&
           this.password === this.secondPassword
         ) {
-          const response = axios.get(this.URL);
+          const response = await axios.get(this.URL);
           const user = Object.values(response.data).filter(
             (item) => item.userName === this.userName
           )[0];
-
-          console.log(user, this.userName);
-          if (user.userName === this.userName) {
+          if (user && user.userName === this.userName) {
             console.log('Already registered');
             this.isUser = true;
             return;
@@ -109,6 +149,9 @@ export default {
 
     changeLoginFlag() {
       this.loginFlag = !this.loginFlag;
+      if (this.registeredUser) this.registeredUser = !this.registeredUser;
+      if (this.loggedIn) this.loggedIn = !this.loggedIn;
+      this.$emit('loginTextNew', 'logout');
     },
   },
 };
@@ -122,6 +165,10 @@ h1 {
 
 h3 {
   margin-bottom: 1rem;
+}
+
+.logged-in {
+  color: var(--green);
 }
 
 .form {
@@ -155,7 +202,7 @@ input:not(:last-child) {
   outline: none;
   border: none;
   cursor: pointer;
-  color: var(--light-pink);
+  color: var(--light-blue);
   text-decoration: underline;
   font-size: 0.8rem;
 }

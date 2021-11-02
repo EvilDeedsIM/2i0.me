@@ -1,6 +1,8 @@
 <template>
   <div class="nav">
-    <router-link to="/login">Login</router-link>
+    <router-link to="/login" @click.prevent="loginLogout">
+      {{ loginText }}
+    </router-link>
     <router-link to="/">Main</router-link>
     <router-link to="/breath">Breath</router-link>
     <router-link to="/focus">Focus</router-link>
@@ -9,6 +11,23 @@
     <router-link to="/reactiongame">Reaction Game</router-link>
   </div>
 </template>
+
+<script>
+export default {
+  props: ['loginText'],
+  methods: {
+    loginLogout(e) {
+      // console.log(e);
+      console.log(this.loginText);
+      if (this.loginText === 'logout') {
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
+        this.$emit('loginTextNew', '');
+      }
+    },
+  },
+};
+</script>
 
 <style>
 .nav {

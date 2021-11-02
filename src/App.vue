@@ -1,14 +1,31 @@
 <template>
-  <navigation></navigation>
+  <navigation
+    :loginText="loginText || 'login'"
+    @loginTextNew="changeLoginText"
+  ></navigation>
 
-  <router-view></router-view>
+  <router-view @loginTextNew="changeLoginText"></router-view>
 </template>
 
 <script>
 import Navigation from './components/Navigation.vue';
+import Autentification from './components/Autentification.vue';
 
 export default {
-  components: { Navigation },
+  data() {
+    return {
+      loginText: '',
+    };
+  },
+  methods: {
+    changeLoginText(data) {
+      this.loginText = data;
+    },
+  },
+  components: {
+    Navigation,
+    Autentification,
+  },
 };
 </script>
 
