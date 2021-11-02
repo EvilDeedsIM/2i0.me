@@ -1,6 +1,6 @@
 <template>
   <h3 v-if="isUser">Is User</h3>
-  <form method="post" class="form" id="login-form" v-if="loginFlag">
+  <form method="get" class="form" id="login-form" v-if="loginFlag">
     <h1>Login</h1>
     <input
       type="text"
@@ -15,7 +15,9 @@
       v-model="password"
     />
     <button type="submit" class="btn" @click.prevent="postUser">Login</button>
-    <button class="change-btn" @click.prevent="changeLoginFlag">Register</button>
+    <button class="change-btn" @click.prevent="changeLoginFlag">
+      Register
+    </button>
   </form>
   <form method="post" class="form" id="register-form" v-else>
     <h1>Register</h1>
@@ -31,8 +33,16 @@
       placeholder="password"
       v-model="password"
     />
-    <button type="submit" class="btn" @click.prevent="postUser">Login</button>
-    <button class="change-btn" @click="changeLoginFlag">Register</button>
+    <input
+      type="password"
+      id="second-password"
+      placeholder="password repeat"
+      v-model="secondPassword"
+    />
+    <button type="submit" class="btn" @click.prevent="postUser">
+      Register
+    </button>
+    <button class="change-btn" @click="changeLoginFlag">Login</button>
   </form>
 </template>
 
@@ -47,30 +57,58 @@ export default {
 
       userName: null,
       password: null,
+      secondPassword: null,
       URL: 'https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/users.json',
     };
   },
   mounted() {},
   methods: {
     async postUser() {
-      if (this.userName && this.password) {
-        const response = await axios.get(this.URL);
-        const user = Object.values(response.data).filter(
-          (item) => item.userName === this.userName
-        )[0];
+      if (this.loginFlag) {
+        if (this.userName && this.password) {
+          const response = await axios.get(this.URL);
+          const user = Object.values(response.data).filter(
+            (item) => item.userName === this.userName
+          )[0];
 
-        console.log(user, this.userName);
-        if (user.userName === this.userName) {
-          console.log('Already registered');
-          this.isUser = true;
-          return;
+          console.log(user, this.userName);
+          if (user.userName === this.userName) {
+            console.log('Already registered');
+            this.isUser = true;
+            return;
+          }
         }
-
-        await axios.post(this.URL, {
-          userName: this.userName,
-          password: this.password,
-        });
       }
+
+      if (!this.loginFlag) {
+        if (
+          this.userName &&
+          this.password &&
+          this.secondPassword &&
+          this.password === this.secondPassword
+        ) {
+          const response = axios.get(this.URL);
+          const user = Object.values(response.data).filter(
+            (item) => item.userName === this.userName
+          )[0];
+
+          console.log(user, this.userName);
+          if (user.userName === this.userName) {
+            console.log('Already registered');
+            this.isUser = true;
+            return;
+          }
+
+          await axios.post(this.URL, {
+            userName: this.userName,
+            password: this.password,
+          });
+        }
+      }
+    },
+
+    changeLoginFlag() {
+      this.loginFlag = !this.loginFlag;
     },
   },
 };
@@ -105,6 +143,7 @@ input:not(:last-child) {
 
 .btn {
   padding: 0.2rem 0.3rem;
+  height: 2rem;
   cursor: pointer;
   margin-bottom: 0.5rem;
   width: 100%;
