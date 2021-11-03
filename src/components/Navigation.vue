@@ -1,7 +1,7 @@
 <template>
   <div class="nav">
     <router-link to="/login" @click.prevent="loginLogout">
-      {{ loginText }}
+      {{ loggedInFlag ? 'logout' : loginText }}
     </router-link>
     <router-link to="/">Main</router-link>
     <router-link to="/breath">Breath</router-link>
@@ -14,12 +14,10 @@
 
 <script>
 export default {
-  props: ['loginText'],
+  props: ['loginText', 'loggedInFlag'],
   methods: {
     loginLogout(e) {
-      // console.log(e);
-      console.log(this.loginText);
-      if (this.loginText === 'logout') {
+      if (this.loginText === 'logout' || this.loggedInFlag) {
         localStorage.removeItem('username');
         localStorage.removeItem('password');
         this.$emit('loginTextNew', '');

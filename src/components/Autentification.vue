@@ -69,30 +69,6 @@ export default {
     };
   },
 
-  async mounted() {
-    const name = localStorage.getItem('username');
-    const psw = localStorage.getItem('password');
-
-    if (name && psw) {
-      const response = await axios.get(this.URL);
-      const user = Object.values(response.data).filter(
-        (item) => item.userName === name && item.password === psw
-      )[0];
-
-      if (user) {
-        this.loginMessageColor = 'var(--green)';
-        this.loginText = 'You are in';
-        this.loggedIn = true;
-
-        this.$emit('loginTextNew', 'logout');
-
-        setTimeout(() => {
-          this.$router.push('/');
-        }, 1500);
-      }
-    }
-  },
-
   methods: {
     async loginUser() {
       if (this.loginFlag) {
@@ -107,16 +83,16 @@ export default {
             localStorage.setItem('username', this.userName);
             localStorage.setItem('password', this.password);
 
-            this.$emit('loginTextNew', 'logout');
-
             setTimeout(() => {
+              this.$emit('loginTextNew', 'logout');
+              this.loggedIn = true;
+              this.$emit('loggedIn', this.loggedIn);
               this.$router.push('/');
-            }, 1500);
+            }, 500);
           } else {
             this.loginMessageColor = 'var(--red)';
             this.loginText = 'Wrong password';
           }
-          this.loggedIn = true;
         }
       }
     },
@@ -134,7 +110,7 @@ export default {
             (item) => item.userName === this.userName
           )[0];
           if (user && user.userName === this.userName) {
-            console.log('Already registered');
+            // console.log('Already registered');
             this.isUser = true;
             return;
           }

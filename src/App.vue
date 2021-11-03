@@ -1,27 +1,80 @@
 <template>
   <navigation
     :loginText="loginText || 'login'"
+    :loggedInFlag="loggedInFlag"
     @loginTextNew="changeLoginText"
   ></navigation>
-
-  <router-view @loginTextNew="changeLoginText"></router-view>
+  <router-view
+    @loginTextNew="changeLoginText"
+    @loggedIn="changeLoggedInFlag"
+    v-if="loggedInFlag"
+  ></router-view>
+  <autentification
+    v-if="!loggedInFlag"
+    @loginTextNew="changeLoginText"
+    @loggedIn="changeLoggedInFlag"
+  />
 </template>
 
 <script>
 import Navigation from './components/Navigation.vue';
 import Autentification from './components/Autentification.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       loginText: '',
+      loggedInFlag: false,
     };
   },
+
+  async created() {
+    const name = localStorage.getItem('username');
+    const psw = localStorage.getItem('password');
+    const user = {
+      userName: name,
+      password: psw,
+    };
+
+    if (user) {
+      await this.getAllUsers();
+      let usersAll = this.users;
+
+      let isUser = Object.values(usersAll).filter((item) => {
+        return item.userName === user.userName;
+      })[0];
+
+      if (isUser) {
+        if (isUser.password === user.password) {
+          console.log('is this user');
+          this.loggedInFlag = true;
+        } else {
+          this.loggedInFlag = false;
+        }
+      } else {
+        this.loggedInFlag = false;
+      }
+    }
+  },
+
   methods: {
     changeLoginText(data) {
       this.loginText = data;
+      this.loggedInFlag = false;
     },
+
+    changeLoggedInFlag(data) {
+      this.loggedInFlag = data;
+    },
+
+    ...mapActions(['getAllUsers']),
   },
+
+  computed: {
+    ...mapGetters(['users']),
+  },
+
   components: {
     Navigation,
     Autentification,
