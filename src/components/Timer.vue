@@ -113,6 +113,7 @@ export default {
     },
 
     playPause() {
+      // Restart
       if (this.timeToGo === 0) {
         this.timeToGo = this.minutesToGo * this.oneMinute;
 
@@ -121,22 +122,26 @@ export default {
         clearInterval(this.titleFaviconInterval);
         this.startInterval();
 
-        document.querySelector("link[rel*='icon']").href = '/favicon-blue.ico';
+        this.changeFavicon('orange');
         return;
       }
 
+      // Play
       if (!this.runFlag) {
         this.timeToGo = this.minutesToGo * this.oneMinute;
         this.runFlag = true;
         this.pauseFlag = false;
         this.hidden = true;
         this.startInterval();
+        this.changeFavicon('orange');
         return;
       }
 
+      // Pause
       clearInterval(this.interval);
       this.pauseFlag = true;
       this.runFlag = false;
+      this.changeFavicon('blue');
     },
 
     stopBtn() {
@@ -163,7 +168,7 @@ export default {
 
       this.timeToGo = null;
 
-      document.querySelector("link[rel*='icon']").href = '/favicon-blue.ico';
+      this.changeFavicon('blue');
     },
 
     addTime(x) {
@@ -202,24 +207,19 @@ export default {
 
     startTitleFaviconInterval() {
       this.titleFaviconInterval = setInterval(() => {
-        this.changeFavicon();
-
         if (document.title === '00:00') {
+          this.changeFavicon('orange');
           document.title = '--:--';
         } else {
+          this.changeFavicon('red');
           document.title = '00:00';
         }
       }, 1000);
     },
 
-    changeFavicon() {
+    changeFavicon(color) {
       const link = document.querySelector("link[rel*='icon']");
-      const linkHref = link.href.split('/').pop();
-      if (linkHref === 'favicon-blue.ico') {
-        link.href = '/favicon-orange.ico';
-      } else {
-        link.href = '/favicon-blue.ico';
-      }
+      link.href = `/favicon-${color}.ico?v=2`;
     },
 
     playAudioListener() {
