@@ -1,52 +1,63 @@
 <template>
-  <h3 class="registered-user" v-if="registeredUser">This nickname is taken</h3>
-  <h3 class="logged-in" :style="`color:${loginMessageColor}`" v-if="loggedIn">
-    {{ loginText }}
-  </h3>
-  <form method="get" class="form" id="login-form" v-if="loginFlag">
-    <h1>Login</h1>
-    <input
-      type="text"
-      id="userName"
-      placeholder="username"
-      v-model="userName"
-    />
-    <input
-      type="password"
-      id="password"
-      placeholder="password"
-      v-model="password"
-    />
-    <button type="submit" class="btn" @click.prevent="loginUser">Login</button>
-    <button class="change-btn" @click.prevent="changeLoginFlag">
-      Register
-    </button>
-  </form>
-  <form method="post" class="form" id="register-form" v-else>
-    <h1>Register</h1>
-    <input
-      type="text"
-      id="userName"
-      placeholder="username"
-      v-model="userName"
-    />
-    <input
-      type="password"
-      id="password"
-      placeholder="password"
-      v-model="password"
-    />
-    <input
-      type="password"
-      id="second-password"
-      placeholder="password repeat"
-      v-model="secondPassword"
-    />
-    <button type="submit" class="btn" @click.prevent="registerUser">
-      Register
-    </button>
-    <button class="change-btn" @click="changeLoginFlag">Login</button>
-  </form>
+  <div v-if="loggedIn">
+    <h3 class="registered-user" v-if="registeredUser">
+      This nickname is taken
+    </h3>
+    <h3 class="logged-in" :style="`color:${loginMessageColor}`" v-if="loggedIn">
+      {{ loginText }}
+    </h3>
+    <form method="get" class="form" id="login-form" v-if="loginFlag">
+      <h1>Login</h1>
+      <input
+        type="text"
+        id="userName"
+        placeholder="username"
+        v-model="userName"
+      />
+      <input
+        type="password"
+        id="password"
+        placeholder="password"
+        v-model="password"
+      />
+      <button type="submit" class="btn" @click.prevent="loginUser">
+        Login
+      </button>
+      <button class="change-btn" @click.prevent="changeLoginFlag">
+        Register
+      </button>
+    </form>
+    <form method="post" class="form" id="register-form" v-else>
+      <h1>Register</h1>
+      <input
+        type="text"
+        id="userName"
+        placeholder="username"
+        v-model="userName"
+      />
+      <input
+        type="password"
+        id="password"
+        placeholder="password"
+        v-model="password"
+      />
+      <input
+        type="password"
+        id="second-password"
+        placeholder="password repeat"
+        v-model="secondPassword"
+      />
+      <button type="submit" class="btn" @click.prevent="registerUser">
+        Register
+      </button>
+      <button class="change-btn" @click="changeLoginFlag">Login</button>
+    </form>
+  </div>
+
+  <div>
+    <p>You are Logged In</p>
+    <p>Logout or go somewhere else</p>
+  </div>
 </template>
 
 <script>
@@ -78,14 +89,15 @@ export default {
             (item) => item.userName === this.userName
           )[0];
           if (user.password === this.password) {
+            this.loggedIn = true;
             this.loginMessageColor = 'var(--green)';
             this.loginText = 'You are in';
+
             localStorage.setItem('username', this.userName);
             localStorage.setItem('password', this.password);
 
             setTimeout(() => {
               this.$emit('loginTextNew', 'logout');
-              this.loggedIn = true;
               this.$emit('loggedIn', this.loggedIn);
               this.$router.push('/');
             }, 500);
@@ -110,7 +122,6 @@ export default {
             (item) => item.userName === this.userName
           )[0];
           if (user && user.userName === this.userName) {
-            // console.log('Already registered');
             this.isUser = true;
             return;
           }
@@ -118,6 +129,7 @@ export default {
           await axios.post(this.URL, {
             userName: this.userName,
             password: this.password,
+            timers: [],
           });
         }
       }
@@ -126,8 +138,10 @@ export default {
     changeLoginFlag() {
       this.loginFlag = !this.loginFlag;
       if (this.registeredUser) this.registeredUser = !this.registeredUser;
-      if (this.loggedIn) this.loggedIn = !this.loggedIn;
-      this.$emit('loginTextNew', 'logout');
+      if (this.loggedIn) {
+        this.loggedIn = !this.loggedIn;
+        this.$emit('loginTextNew', 'logout');
+      }
     },
   },
 };
@@ -141,6 +155,12 @@ h1 {
 
 h3 {
   margin-bottom: 1rem;
+}
+
+p {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
 }
 
 .logged-in {

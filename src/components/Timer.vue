@@ -64,6 +64,7 @@ import { Icon } from '@iconify/vue';
 import axios from 'axios';
 
 export default {
+  props: ['user'],
   data() {
     return {
       title: '2i0.me',
@@ -85,8 +86,7 @@ export default {
 
       timers: 0,
       totalTime: 0,
-      timersUrl:
-        'https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/timers.json',
+      timersUrl: `https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/users/${this.user.id}/timers.json`,
     };
   },
   created() {
@@ -94,8 +94,10 @@ export default {
   },
   methods: {
     async saveTimer() {
+      const date = Date.now();
+
       const response = await axios.post(this.timersUrl, {
-        title: 'timer:' + Date.now(),
+        title: 'timer-' + Date.now(),
         time: this.minutesToGo,
       });
       this.loadTimersCount();
@@ -243,7 +245,6 @@ export default {
       const condition = e.target.value;
       if (condition === 'on') this.audioFlag = true;
       if (condition === 'off') this.audioFlag = false;
-      console.log(this.audioFlag);
     },
   },
   computed: {

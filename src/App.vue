@@ -8,6 +8,7 @@
     @loginTextNew="changeLoginText"
     @loggedIn="changeLoggedInFlag"
     v-if="loggedInFlag"
+    :user="user"
   ></router-view>
   <autentification
     v-if="!loggedInFlag"
@@ -26,6 +27,7 @@ export default {
     return {
       loginText: '',
       loggedInFlag: false,
+      user: {},
     };
   },
 
@@ -39,16 +41,22 @@ export default {
 
     if (user) {
       await this.getAllUsers();
-      let usersAll = this.users;
+      const allUsersArr = Object.entries(this.users);
 
-      let isUser = Object.values(usersAll).filter((item) => {
-        return item.userName === user.userName;
-      })[0];
+      const isUser = allUsersArr.filter((user) => user[1].userName === 'a')[0];
 
       if (isUser) {
-        if (isUser.password === user.password) {
-          console.log('is this user');
+        if (isUser[1].password == user.password) {
           this.loggedInFlag = true;
+
+          this.user = {
+            id: isUser[0],
+            data: {
+              userName: isUser[1].userName,
+              timers: isUser[1].timers,
+            },
+          };
+          console.log(this.user);
         } else {
           this.loggedInFlag = false;
         }

@@ -11,7 +11,7 @@
     <label for="minutes">Minutes</label>
     <span id="seconds">{{ getSeconds }}</span>
     <label for="seconds">Seconds</label>
-    <h2 class="quote-title">Everyday Improve Yourself</h2>
+    <h2 class="quote-title">Improve Yourself</h2>
   </div>
 </template>
 
@@ -76,7 +76,7 @@ h2 {
   margin-bottom: 0.5rem;
 }
 
-.quote-title{
+.quote-title {
   margin-top: 1rem;
   font-size: 1.2rem;
 }

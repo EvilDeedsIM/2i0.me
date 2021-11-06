@@ -13,7 +13,6 @@ export default {
   },
   mutations: {
     setUsers(state, usersAll) {
-      // console.log(state.users);
       state.users = usersAll;
     },
   },
