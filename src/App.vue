@@ -9,11 +9,13 @@
     @loggedIn="changeLoggedInFlag"
     v-if="loggedInFlag"
     :user="user"
+    :loggedInFlag="loggedInFlag"
   ></router-view>
   <autentification
-    v-if="!loggedInFlag"
+    v-else
     @loginTextNew="changeLoginText"
     @loggedIn="changeLoggedInFlag"
+    :loggedInFlag="loggedInFlag"
   />
 </template>
 
@@ -56,7 +58,7 @@ export default {
               timers: isUser[1].timers,
             },
           };
-          console.log(this.user);
+          // console.log(this.user);
         } else {
           this.loggedInFlag = false;
         }
@@ -73,7 +75,9 @@ export default {
     },
 
     changeLoggedInFlag(data) {
+      console.log(data);
       this.loggedInFlag = data;
+      console.log(this.loggedInFlag);
     },
 
     ...mapActions(['getAllUsers']),
@@ -86,6 +90,10 @@ export default {
   components: {
     Navigation,
     Autentification,
+  },
+
+  watch: {
+    loggedInFlag: (newV, oldV) => console.log(newV),
   },
 };
 </script>

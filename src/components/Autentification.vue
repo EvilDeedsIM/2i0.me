@@ -1,9 +1,19 @@
 <template>
   <div v-if="loggedIn">
+    <p>You are Logged In</p>
+    <p>Logout or go somewhere else</p>
+    {{ loginTextFromApp }}
+  </div>
+
+  <div v-else>
     <h3 class="registered-user" v-if="registeredUser">
       This nickname is taken
     </h3>
-    <h3 class="logged-in" :style="`color:${loginMessageColor}`" v-if="loggedIn">
+    <h3
+      class="logged-in"
+      :style="`color:${loginMessageColor}`"
+      v-if="loginFlag"
+    >
       {{ loginText }}
     </h3>
     <form method="get" class="form" id="login-form" v-if="loginFlag">
@@ -27,7 +37,7 @@
         Register
       </button>
     </form>
-    <form method="post" class="form" id="register-form" v-else>
+    <form method="post" class="form" id="register-form" v-else-if="!loginFlag">
       <h1>Register</h1>
       <input
         type="text"
@@ -53,21 +63,17 @@
       <button class="change-btn" @click="changeLoginFlag">Login</button>
     </form>
   </div>
-
-  <div>
-    <p>You are Logged In</p>
-    <p>Logout or go somewhere else</p>
-  </div>
 </template>
 
 <script>
 import axios from 'axios';
 
 export default {
+  props: ['loggedInFlag'],
   data() {
     return {
       registeredUser: false,
-      loggedIn: false,
+      loggedIn: this.loggedInFlag,
       loginFlag: true,
 
       loginText: '',
@@ -79,6 +85,8 @@ export default {
       URL: 'https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/users.json',
     };
   },
+
+  created() {},
 
   methods: {
     async loginUser() {
