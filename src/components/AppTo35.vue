@@ -11,7 +11,7 @@
     <label for="minutes">Minutes</label>
     <span id="seconds">{{ getSeconds }}</span>
     <label for="seconds">Seconds</label>
-    <h2 class="quote-title">Improve Yourself</h2>
+    <h2 class="quote-title">Take Yourself to the Next Level</h2>
   </div>
 </template>
 
@@ -69,7 +69,6 @@ span {
   display: block;
   font-size: 1rem;
   font-weight: 700;
-  color: ;
 }
 
 h2 {
