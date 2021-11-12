@@ -10,6 +10,7 @@
     v-if="loggedInFlag"
     :user="user"
     :loggedInFlag="loggedInFlag"
+    @run-flag="check"
   ></router-view>
   <autentification
     v-else
@@ -34,50 +35,60 @@ export default {
   },
 
   async created() {
-    const name = localStorage.getItem('username');
-    const psw = localStorage.getItem('password');
-    const user = {
-      userName: name,
-      password: psw,
-    };
-
-    if (user) {
-      await this.getAllUsers();
-      const allUsersArr = Object.entries(this.users);
-
-      const isUser = allUsersArr.filter((user) => user[1].userName === 'a')[0];
-
-      if (isUser) {
-        if (isUser[1].password == user.password) {
-          this.loggedInFlag = true;
-
-          this.user = {
-            id: isUser[0],
-            data: {
-              userName: isUser[1].userName,
-              timers: isUser[1].timers,
-            },
-          };
-          // console.log(this.user);
-        } else {
-          this.loggedInFlag = false;
-        }
-      } else {
-        this.loggedInFlag = false;
-      }
-    }
+    await this.getUsers();
   },
 
   methods: {
+    async getUsers() {
+      const name = localStorage.getItem('username');
+      const psw = localStorage.getItem('password');
+      const user = {
+        userName: name,
+        password: psw,
+      };
+
+      if (user) {
+        await this.getAllUsers();
+        const allUsersArr = Object.entries(this.users);
+
+        const isUser = allUsersArr.filter(
+          (user) => user[1].userName === 'a'
+        )[0];
+
+        if (isUser) {
+          if (isUser[1].password == user.password) {
+            this.loggedInFlag = true;
+
+            this.user = {
+              id: isUser[0],
+              data: {
+                userName: isUser[1].userName,
+                timers: isUser[1].timers,
+                'up-timers': isUser[1]['up-timers'],
+              },
+            };
+          } else {
+            this.loggedInFlag = false;
+          }
+        } else {
+          this.loggedInFlag = false;
+        }
+      }
+    },
+
+    async check(data) {
+      // console.log(111);
+      await this.getUsers();
+      // console.log(data);
+    },
+
     changeLoginText(data) {
       this.loginText = data;
       this.loggedInFlag = false;
     },
 
     changeLoggedInFlag(data) {
-      console.log(data);
       this.loggedInFlag = data;
-      console.log(this.loggedInFlag);
     },
 
     ...mapActions(['getAllUsers']),
@@ -93,7 +104,7 @@ export default {
   },
 
   watch: {
-    loggedInFlag: (newV, oldV) => console.log(newV),
+    // loggedInFlag: (newV, oldV) => console.log(newV),
   },
 };
 </script>

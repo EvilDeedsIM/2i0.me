@@ -70,8 +70,8 @@ export default {
       title: '2i0.me',
 
       defaultMinutes: 25,
-      minutesToGo: 25,
-      oneMinute: 60,
+      minutesToGo: 1,
+      oneMinute: 2,
       timeToGo: null,
 
       runFlag: false,
