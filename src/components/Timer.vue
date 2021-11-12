@@ -6,15 +6,10 @@ const props = defineProps({
   user: Object,
 });
 const { user } = toRefs(props);
-let timers = ref(user.value.data['up-timers']);
 
 const emit = defineEmits(['run-flag']);
 
 const timerUrl = `https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/users/${props.user.id}/up-timers.json`;
-
-// console.log(props.user.data);
-
-// let timers = ref(props.user.data['up-timers']);
 
 let time = ref(0);
 let interval = null;
@@ -39,14 +34,18 @@ function start() {
 }
 
 function stop() {
-  saveTimer();
-  runFlag = false;
-  emit('run-flag', runFlag);
-  changeFavicon('blue');
-  clearInterval(interval);
-  time.value = 0;
-  startBtnText.value = 'Start';
-  timers = user.value.data['up-timers'] || {};
+  if (runFlag) {
+    const res = confirm('Really Want to STOP?');
+    if (res) {
+      saveTimer();
+      runFlag = false;
+      emit('run-flag', runFlag);
+      changeFavicon('blue');
+      clearInterval(interval);
+      time.value = 0;
+      startBtnText.value = 'Start';
+    }
+  }
 }
 
 const timeComputed = computed(() => {
@@ -64,15 +63,22 @@ const timeComputed = computed(() => {
   }`;
 });
 
+let timers = computed(() => {
+  const allTimersArr = Object.values(user.value.data['up-timers'] || {});
+  const count = allTimersArr.length;
+  const time = allTimersArr.reduce((acc, time) => {
+    return acc + time.time;
+  }, 0);
+
+  return {
+    count,
+    time,
+  };
+});
+
 function changeFavicon(color) {
   const link = document.querySelector("link[rel*='icon']");
   link.href = `/favicon-${color}.ico?v=2`;
-}
-
-function getTimers() {
-  console.log('get');
-  // console.log(user.value);
-  timers = user.value.data['up-timers'];
 }
 
 async function saveTimer() {
@@ -88,10 +94,6 @@ async function saveTimer() {
     },
     { headers }
   );
-
-  watch(user, () => {
-    getTimers();
-  });
 }
 </script>
 
@@ -115,8 +117,10 @@ async function saveTimer() {
 
     <div class="user">
       <div class="user-name">Hello {{ user.data.userName }}</div>
-      <!-- {{user.data.timers}} -->
-      <div v-if="Object.keys(timers).length">{{ timers }}</div>
+      <div v-if="Object.keys(timers).length">
+        <p>Total timers: {{ timers.count }}</p>
+        <p>Total time spent: {{ timers.time }}</p>
+      </div>
     </div>
   </div>
 </template>

@@ -52,11 +52,11 @@ export default {
         const allUsersArr = Object.entries(this.users);
 
         const isUser = allUsersArr.filter(
-          (user) => user[1].userName === 'a'
+          (user) => user[1].userName === name
         )[0];
 
         if (isUser) {
-          if (isUser[1].password == user.password) {
+          if (isUser[1].password == psw) {
             this.loggedInFlag = true;
 
             this.user = {
@@ -77,9 +77,7 @@ export default {
     },
 
     async check(data) {
-      // console.log(111);
       await this.getUsers();
-      // console.log(data);
     },
 
     changeLoginText(data) {
@@ -101,10 +99,6 @@ export default {
   components: {
     Navigation,
     Autentification,
-  },
-
-  watch: {
-    // loggedInFlag: (newV, oldV) => console.log(newV),
   },
 };
 </script>
