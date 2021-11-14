@@ -74,8 +74,8 @@ export default {
       title: '2i0.me',
 
       defaultMinutes: 25,
-      minutesToGo: 1,
-      oneMinute: 2,
+      minutesToGo: 25,
+      oneMinute: 60,
       timeToGo: null,
 
       runFlag: false,
