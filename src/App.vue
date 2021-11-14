@@ -54,8 +54,9 @@ export default {
         const isUser = allUsersArr.filter(
           (user) => user[1].userName === 'a'
         )[0];
-
+        console.log(isUser);
         if (isUser) {
+          // console.log(isUser);
           if (isUser[1].password == user.password) {
             this.loggedInFlag = true;
 
@@ -77,9 +78,7 @@ export default {
     },
 
     async check(data) {
-      // console.log(111);
       await this.getUsers();
-      // console.log(data);
     },
 
     changeLoginText(data) {
