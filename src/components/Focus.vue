@@ -51,6 +51,7 @@
 
 <script>
 export default {
+  inheritAttrs: false,
   data() {
     return {
       value: 0,

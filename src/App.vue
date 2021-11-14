@@ -1,23 +1,11 @@
 <template>
-  <navigation
-    :loginText="loginText || 'login'"
-    :loggedInFlag="loggedInFlag"
-    @loginTextNew="changeLoginText"
-  ></navigation>
+  <navigation @logged-out="logout" :loggedInFlag="loggedInFlag"></navigation>
+
   <router-view
-    @loginTextNew="changeLoginText"
-    @loggedIn="changeLoggedInFlag"
-    v-if="loggedInFlag"
+    @auth-user="authUser"
     :user="user"
     :loggedInFlag="loggedInFlag"
-    @run-flag="check"
   ></router-view>
-  <autentification
-    v-else
-    @loginTextNew="changeLoginText"
-    @loggedIn="changeLoggedInFlag"
-    :loggedInFlag="loggedInFlag"
-  />
 </template>
 
 <script>
@@ -26,6 +14,9 @@ import Autentification from './components/Autentification.vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
+  inheritAttrs: false,
+
+  emits: ['user', 'loggedInFlag'],
   data() {
     return {
       loginText: '',
@@ -34,59 +25,23 @@ export default {
     };
   },
 
-  async created() {
-    await this.getUsers();
+  created() {
+    const localUser = localStorage.getItem('user');
+    if (localUser) {
+      this.user = JSON.parse(localUser);
+      this.loggedInFlag = true;
+    }
   },
 
   methods: {
-    async getUsers() {
-      const name = localStorage.getItem('username');
-      const psw = localStorage.getItem('password');
-      const user = {
-        userName: name,
-        password: psw,
-      };
-
-      if (user) {
-        await this.getAllUsers();
-        const allUsersArr = Object.entries(this.users);
-
-        const isUser = allUsersArr.filter(
-          (user) => user[1].userName === name
-        )[0];
-        console.log(isUser);
-        if (isUser) {
-          if (isUser[1].password == psw) {
-            this.loggedInFlag = true;
-
-            this.user = {
-              id: isUser[0],
-              data: {
-                userName: isUser[1].userName,
-                timers: isUser[1].timers,
-                'up-timers': isUser[1]['up-timers'],
-              },
-            };
-          } else {
-            this.loggedInFlag = false;
-          }
-        } else {
-          this.loggedInFlag = false;
-        }
-      }
+    authUser(data) {
+      this.user = data;
+      localStorage.setItem('user', JSON.stringify(this.user));
+      this.loggedInFlag = true;
     },
 
-    async check(data) {
-      await this.getUsers();
-    },
-
-    changeLoginText(data) {
-      this.loginText = data;
-      this.loggedInFlag = false;
-    },
-
-    changeLoggedInFlag(data) {
-      this.loggedInFlag = data;
+    logout(data) {
+      this.loggedInFlag = !data;
     },
 
     ...mapActions(['getAllUsers']),

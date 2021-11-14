@@ -1,22 +1,11 @@
 <template>
-  <div v-if="loggedIn">
+  <!-- <div v-if="loggedIn">
     <p>You are Logged In</p>
     <p>Logout or go somewhere else</p>
-    {{ loginTextFromApp }}
-  </div>
+  </div> -->
 
-  <div v-else>
-    <h3 class="registered-user" v-if="registeredUser">
-      This nickname is taken
-    </h3>
-    <h3
-      class="logged-in"
-      :style="`color:${loginMessageColor}`"
-      v-if="loginFlag"
-    >
-      {{ loginText }}
-    </h3>
-    <form method="get" class="form" id="login-form" v-if="loginFlag">
+  <div>
+    <form method="get" class="form" id="login-form">
       <h1>Login</h1>
       <input
         type="text"
@@ -33,34 +22,6 @@
       <button type="submit" class="btn" @click.prevent="loginUser">
         Login
       </button>
-      <button class="change-btn" @click.prevent="changeLoginFlag">
-        Register
-      </button>
-    </form>
-    <form method="post" class="form" id="register-form" v-else-if="!loginFlag">
-      <h1>Register</h1>
-      <input
-        type="text"
-        id="userName"
-        placeholder="username"
-        v-model="userName"
-      />
-      <input
-        type="password"
-        id="password"
-        placeholder="password"
-        v-model="password"
-      />
-      <input
-        type="password"
-        id="second-password"
-        placeholder="password repeat"
-        v-model="secondPassword"
-      />
-      <button type="submit" class="btn" @click.prevent="registerUser">
-        Register
-      </button>
-      <button class="change-btn" @click="changeLoginFlag">Login</button>
     </form>
   </div>
 </template>
@@ -69,19 +30,13 @@
 import axios from 'axios';
 
 export default {
+  inheritAttrs: false,
   props: ['loggedInFlag'],
   data() {
     return {
-      registeredUser: false,
-      loggedIn: this.loggedInFlag,
       loginFlag: true,
-
-      loginText: '',
-      loginMessageColor: 'gg',
-
       userName: null,
       password: null,
-      secondPassword: null,
       URL: 'https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/users.json',
     };
   },
@@ -90,65 +45,17 @@ export default {
 
   methods: {
     async loginUser() {
-      if (this.loginFlag) {
-        if (this.userName && this.password) {
-          const response = await axios.get(this.URL);
-          const user = Object.values(response.data).filter(
-            (item) => item.userName === this.userName
-          )[0];
-          if (user.password === this.password) {
-            this.loggedIn = true;
-            this.loginMessageColor = 'var(--green)';
-            this.loginText = 'You are in';
-
-            localStorage.setItem('username', this.userName);
-            localStorage.setItem('password', this.password);
-
-            setTimeout(() => {
-              this.$emit('loginTextNew', 'logout');
-              this.$emit('loggedIn', this.loggedIn);
-              this.$router.push('/');
-            }, 500);
-          } else {
-            this.loginMessageColor = 'var(--red)';
-            this.loginText = 'Wrong password';
-          }
+      if (this.userName && this.password) {
+        const response = await axios.get(this.URL);
+        const user = Object.values(response.data).filter(
+          (item) => item.userName === this.userName
+        )[0];
+        this.$emit('auth-user', user);
+        if (user.password === this.password) {
+          setTimeout(() => {
+            this.$router.push('/');
+          }, 500);
         }
-      }
-    },
-
-    async registerUser() {
-      if (!this.loginFlag) {
-        if (
-          this.userName &&
-          this.password &&
-          this.secondPassword &&
-          this.password === this.secondPassword
-        ) {
-          const response = await axios.get(this.URL);
-          const user = Object.values(response.data).filter(
-            (item) => item.userName === this.userName
-          )[0];
-          if (user && user.userName === this.userName) {
-            this.isUser = true;
-            return;
-          }
-
-          await axios.post(this.URL, {
-            userName: this.userName,
-            password: this.password,
-            timers: [],
-          });
-        }
-      }
-    },
-
-    changeLoginFlag() {
-      this.loginFlag = !this.loginFlag;
-      if (this.registeredUser) this.registeredUser = !this.registeredUser;
-      if (this.loggedIn) {
-        this.loggedIn = !this.loggedIn;
-        this.$emit('loginTextNew', 'logout');
       }
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="total">
+  <div class="total" v-if="loggedInFlag">
     <p class="text-right">Timers: {{ timers }}&nbsp;|&nbsp;</p>
     <p>Total time: {{ totalTime }}</p>
   </div>
@@ -21,7 +21,6 @@
     </div>
 
     <div class="user">
-      <div class="user-name">Hello {{ user.data.userName }}</div>
       <div v-if="Object.keys(timers).length">
         <p>Total timers: {{ timers.count }}</p>
         <p>Total time spent: {{ timers.time }}</p>
@@ -60,7 +59,6 @@
         <label for="audio-off">off</label>
       </div>
     </div>
-    <p>{{ user }}</p>
   </div>
 </template>
 
@@ -69,7 +67,8 @@ import { Icon } from '@iconify/vue';
 import axios from 'axios';
 
 export default {
-  props: ['user'],
+  inheritAttrs: false,
+  props: ['user', 'loggedInFlag'],
   data() {
     return {
       title: '2i0.me',

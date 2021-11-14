@@ -1,26 +1,34 @@
 <template>
   <div class="nav">
-    <router-link to="/login" @click.prevent="loginLogout">
-      {{ loggedInFlag ? 'logout' : loginText }}
-    </router-link>
+    <!-- {{ loggedInFlag }} -->
     <router-link to="/">Main</router-link>
     <router-link to="/breath">Breath</router-link>
     <router-link to="/focus">Focus</router-link>
     <router-link to="/timer">Timer</router-link>
     <router-link to="/reactiongame">Reaction Game</router-link>
+    <router-link
+      v-if="loggedInFlag"
+      to="/login"
+      @click.prevent="loginLogout"
+      class=""
+    >
+      logout
+    </router-link>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['loginText', 'loggedInFlag'],
+  inheritAttrs: false,
+  props: ['loggedInFlag'],
+  emits: ['logged-out'],
   methods: {
     loginLogout(e) {
-      if (this.loginText === 'logout' || this.loggedInFlag) {
-        localStorage.removeItem('username');
-        localStorage.removeItem('password');
-        this.$emit('loginTextNew', '');
-      }
+      localStorage.removeItem('user');
+      this.$emit('logged-out', true);
+      setTimeout(() => {
+        this.$router.push('/');
+      }, 500);
     },
   },
 };

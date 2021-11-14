@@ -13,6 +13,7 @@
 
 <script>
 export default {
+  inheritAttrs: false,
   data() {
     return {
       defaultTime: 7,
@@ -95,7 +96,7 @@ export default {
   letter-spacing: 0.3rem;
   cursor: pointer;
   background: none;
-  color:  var(--white);
+  color: var(--white);
   border: 2px solid var(--white);
   border-radius: 10px;
   opacity: 1;

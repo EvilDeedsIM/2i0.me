@@ -10,6 +10,7 @@
 import Enemy from './reaction_game_parts/Enemy.vue';
 
 export default {
+  inheritAttrs: false,
   data() {
     return {
       heroPos: {

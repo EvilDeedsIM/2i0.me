@@ -1,4 +1,8 @@
 <template>
+  <div class="greeting" v-if="loggedInFlag">
+    Gretings <strong>{{ getUserName }}</strong>
+  </div>
+
   <div class="container">
     <h2>35</h2>
     <span id="years">{{ getYears }}</span>
@@ -11,12 +15,14 @@
     <label for="minutes">Minutes</label>
     <span id="seconds">{{ getSeconds }}</span>
     <label for="seconds">Seconds</label>
-    <h2 class="quote-title">Take Yourself to the Next Level</h2>
+    <h2 class="quote-title">Improve Yourself</h2>
   </div>
 </template>
 
 <script>
 export default {
+  inheritAttrs: false,
+  props: ['user', 'loggedInFlag'],
   data() {
     return {
       finishDate: new Date(`February 20 2024 00:00`),
@@ -36,6 +42,9 @@ export default {
     setTime() {
       this.timeToGo = this.finishDate - new Date();
     },
+    print() {
+      console.log(this.user);
+    },
   },
   computed: {
     getYears() {
@@ -52,6 +61,9 @@ export default {
     },
     getSeconds() {
       return Math.floor(this.timeToGo / 1000);
+    },
+    getUserName() {
+      return this.user.userName;
     },
   },
 };
@@ -73,6 +85,16 @@ span {
 
 h2 {
   margin-bottom: 0.5rem;
+}
+
+.greeting {
+  margin-bottom: 4rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.greeting strong {
+  font-weight: 800;
 }
 
 .quote-title {
