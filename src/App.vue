@@ -52,12 +52,11 @@ export default {
         const allUsersArr = Object.entries(this.users);
 
         const isUser = allUsersArr.filter(
-          (user) => user[1].userName === 'a'
+          (user) => user[1].userName === name
         )[0];
         console.log(isUser);
         if (isUser) {
-          // console.log(isUser);
-          if (isUser[1].password == user.password) {
+          if (isUser[1].password == psw) {
             this.loggedInFlag = true;
 
             this.user = {
@@ -100,10 +99,6 @@ export default {
   components: {
     Navigation,
     Autentification,
-  },
-
-  watch: {
-    // loggedInFlag: (newV, oldV) => console.log(newV),
   },
 };
 </script>

@@ -19,9 +19,13 @@
         v-if="!hidden"
       />
     </div>
-    <span v-if="runFlag || pauseFlag">:</span>
-    <div class="seconds-div" v-if="runFlag || pauseFlag">
-      <span class="seconds">{{ time.sec }}</span>
+
+    <div class="user">
+      <div class="user-name">Hello {{ user.data.userName }}</div>
+      <div v-if="Object.keys(timers).length">
+        <p>Total timers: {{ timers.count }}</p>
+        <p>Total time spent: {{ timers.time }}</p>
+      </div>
     </div>
   </div>
   <div class="buttons">
@@ -56,7 +60,7 @@
         <label for="audio-off">off</label>
       </div>
     </div>
-      <p>{{ user }}</p>
+    <p>{{ user }}</p>
   </div>
 </template>
 
