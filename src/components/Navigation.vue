@@ -54,6 +54,7 @@ export default {
 }
 
 .nav a {
+  position: relative;
   padding: 0.2rem 0.6rem;
   color: var(--white);
   text-transform: none;
@@ -61,7 +62,6 @@ export default {
   font-size: 0.9rem;
   font-weight: 700;
   text-transform: uppercase;
-  background-color: var(--blue);
   border-radius: 6px;
   transition: 0.3s ease-in-out;
 }
@@ -69,7 +69,7 @@ export default {
 .nav a.active {
   margin-bottom: 0.5rem;
   border-bottom: 1px solid var(--light-blue);
-  box-shadow: 0 2px 10px var(--blue);
+  box-shadow: 0 2px 8px var(--blue);
   transition: 0.3s ease-in-out;
   user-select: none;
   pointer-events: none;

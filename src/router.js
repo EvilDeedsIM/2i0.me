@@ -5,11 +5,13 @@ import Focus from './components/Focus.vue';
 import Timer from './components/Timer.vue';
 import Autentification from './components/Autentification.vue';
 import ReactionGame from './components/ReactionGame.vue';
+import MainPage from './components/MainPage.vue';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: AppTo35 },
+    { path: '/', component: MainPage },
+    { path: '/to35', component: AppTo35 },
     { path: '/breath', component: Breath },
     { path: '/focus', component: Focus },
     { path: '/timer', component: Timer },

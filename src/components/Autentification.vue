@@ -54,7 +54,7 @@ export default {
 
         if (user[1].password === this.password) {
           setTimeout(() => {
-            this.$router.push('/');
+            this.$router.push('/to35');
           }, 500);
         }
       }

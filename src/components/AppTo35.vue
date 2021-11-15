@@ -1,10 +1,11 @@
 <template>
-  <div class="greeting" v-if="loggedInFlag">
-    Gretings <strong>{{ getUserName }}</strong>
-  </div>
-
   <div class="container">
+    <div class="greeting" v-if="loggedInFlag">
+      Gretings <strong>{{ getUserName }}</strong>
+    </div>
+
     <h2>35</h2>
+
     <span id="years">{{ getYears }}</span>
     <label for="years">Years</label>
     <span id="days">{{ getDays }}</span>
@@ -75,6 +76,9 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 2rem 5rem;
+  border: 2px solid var(--white);
+  box-shadow: 0 0 10px var(--blue), inset 0 0 10px var(--blue), 0 0 20px var(--blue);
 }
 
 span {
