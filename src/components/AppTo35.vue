@@ -63,7 +63,7 @@ export default {
       return Math.floor(this.timeToGo / 1000);
     },
     getUserName() {
-      return this.user.userName;
+      return this.user.data.userName;
     },
   },
 };

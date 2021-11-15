@@ -26,8 +26,8 @@ export default {
   },
 
   created() {
-    const localUser = localStorage.getItem('user');
-    if (localUser) {
+    const localUser = localStorage.getItem('user') || {};
+    if (Object.keys(localUser).length > 0) {
       this.user = JSON.parse(localUser);
       this.loggedInFlag = true;
     }
@@ -38,6 +38,7 @@ export default {
       this.user = data;
       localStorage.setItem('user', JSON.stringify(this.user));
       this.loggedInFlag = true;
+      console.log(this.user);
     },
 
     logout(data) {

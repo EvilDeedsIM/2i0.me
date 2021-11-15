@@ -202,7 +202,10 @@ export default {
         this.playAudio();
       }
 
-      this.saveTimer();
+      if (this.user.data.userName) {
+        this.saveTimer();
+      }
+
       this.startTitleFaviconInterval();
       clearInterval(this.interval);
     },

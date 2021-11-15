@@ -21,6 +21,8 @@ export default {
       const allUsers = await axios(
         'https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/users.json'
       );
+
+      console.log(allUsers);
       commit('setUsers', { ...allUsers.data });
     },
   },

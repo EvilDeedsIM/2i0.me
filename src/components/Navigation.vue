@@ -1,6 +1,5 @@
 <template>
   <div class="nav">
-    <!-- {{ loggedInFlag }} -->
     <router-link to="/">Main</router-link>
     <router-link to="/breath">Breath</router-link>
     <router-link to="/focus">Focus</router-link>
@@ -22,6 +21,11 @@ export default {
   inheritAttrs: false,
   props: ['loggedInFlag'],
   emits: ['logged-out'],
+  data() {
+    return {
+      active: 0,
+    };
+  },
   methods: {
     loginLogout(e) {
       localStorage.removeItem('user');
@@ -43,48 +47,46 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 0.5rem;
   padding: 1rem 0;
   margin-bottom: 1rem;
   z-index: 2;
 }
 
 .nav a {
-  position: relative;
+  padding: 0.2rem 0.6rem;
   color: var(--white);
   text-transform: none;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 700;
-  transition: 0.2s ease-in-out;
   text-transform: uppercase;
-}
-
-.nav a::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: var(--white);
+  background-color: var(--blue);
+  border-radius: 6px;
+  transition: 0.3s ease-in-out;
 }
 
 .nav a.active {
-  border: 1px solid var(--white);
-  border-radius: 5px;
-  padding: 0 5px;
-  text-decoration: none;
-  transition: 0.2s ease-in-out;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--light-blue);
+  box-shadow: 0 2px 10px var(--blue);
+  transition: 0.3s ease-in-out;
+  user-select: none;
+  pointer-events: none;
 }
 
-.nav a.active::before {
-  width: 0;
+.nav a:hover {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--light-blue);
+  box-shadow: 0 2px 10px var(--blue);
+  transition: 0.1s ease-in-out;
 }
 
-.nav a:hover::before {
-  left: 50%;
-  width: 0;
-  transition: 0.2s ease-in-out;
+.nav a:active {
+  margin-bottom: 0.3rem;
+  margin-top: 0.2rem;
+  border-bottom: 1px solid var(--light-blue);
+  box-shadow: 0 2px 2px var(--blue);
+  transition: 0.1s ease-in-out;
 }
 </style>
