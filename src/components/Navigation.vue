@@ -1,6 +1,5 @@
 <template>
   <div class="nav">
-    <!-- {{ loggedInFlag }} -->
     <router-link to="/">Main</router-link>
     <router-link to="/breath">Breath</router-link>
     <router-link to="/focus">Focus</router-link>
@@ -22,6 +21,11 @@ export default {
   inheritAttrs: false,
   props: ['loggedInFlag'],
   emits: ['logged-out'],
+  data() {
+    return {
+      active: 0,
+    };
+  },
   methods: {
     loginLogout(e) {
       localStorage.removeItem('user');
@@ -67,11 +71,11 @@ export default {
   left: 0;
   width: 100%;
   height: 1px;
-  background-color: var(--white);
+  background-color: var(--blue);
 }
 
 .nav a.active {
-  border: 1px solid var(--white);
+  border: 1px solid var(--blue);
   border-radius: 5px;
   padding: 0 5px;
   text-decoration: none;

@@ -1,9 +1,4 @@
 <template>
-  <!-- <div v-if="loggedIn">
-    <p>You are Logged In</p>
-    <p>Logout or go somewhere else</p>
-  </div> -->
-
   <div>
     <form method="get" class="form" id="login-form">
       <h1>Login</h1>
@@ -47,11 +42,17 @@ export default {
     async loginUser() {
       if (this.userName && this.password) {
         const response = await axios.get(this.URL);
-        const user = Object.values(response.data).filter(
-          (item) => item.userName === this.userName
-        )[0];
-        this.$emit('auth-user', user);
-        if (user.password === this.password) {
+        const users = Object.entries(response.data);
+        const user = users.filter((item) => {
+          return item[1].userName === this.userName;
+        })[0];
+
+        this.$emit('auth-user', {
+          id: user[0],
+          data: user[1],
+        });
+
+        if (user[1].password === this.password) {
           setTimeout(() => {
             this.$router.push('/');
           }, 500);
