@@ -1,18 +1,32 @@
 <template>
   <div class="nav">
-    <router-link to="/">Main</router-link>
-    <router-link to="/breath">Breath</router-link>
-    <router-link to="/focus">Focus</router-link>
-    <router-link to="/timer">Timer</router-link>
-    <router-link to="/reactiongame">Reaction Game</router-link>
-    <router-link
-      v-if="loggedInFlag"
-      to="/login"
-      @click.prevent="loginLogout"
-      class=""
-    >
-      logout
-    </router-link>
+    <div class="menu" @click="menuToggle">
+      <span>{{ menuText }}</span>
+      <ul class="menu-list" v-if="menuFlag">
+        <li>
+          <router-link to="/">Main</router-link>
+        </li>
+        <li>
+          <router-link to="/breath">Breath</router-link>
+        </li>
+
+        <li><router-link to="/focus">Focus</router-link></li>
+        <li><router-link to="/timer">Timer</router-link></li>
+        <li>
+          <router-link to="/reactiongame">Reaction&nbsp;Game</router-link>
+        </li>
+        <li>
+          <router-link
+            v-if="loggedInFlag"
+            to="/login"
+            @click.prevent="loginLogout"
+            class=""
+          >
+            logout
+          </router-link>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -24,6 +38,8 @@ export default {
   data() {
     return {
       active: 0,
+      menuFlag: false,
+      menuText: '+',
     };
   },
   methods: {
@@ -34,22 +50,49 @@ export default {
         this.$router.push('/');
       }, 500);
     },
+    menuToggle() {
+      this.menuFlag = !this.menuFlag;
+      if (this.menuText === '+') {
+        this.menuText = '-';
+        return;
+      }
+      this.menuText = '+';
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.menu {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--light-blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.menu-list {
+  position: absolute;
+  bottom: -100%;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .nav {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  padding: 1rem 0;
-  margin-bottom: 1rem;
   z-index: 2;
 }
 
@@ -64,29 +107,5 @@ export default {
   text-transform: uppercase;
   border-radius: 6px;
   transition: 0.3s ease-in-out;
-}
-
-.nav a.active {
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--light-blue);
-  box-shadow: 0 2px 8px var(--blue);
-  transition: 0.3s ease-in-out;
-  user-select: none;
-  pointer-events: none;
-}
-
-.nav a:hover {
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--light-blue);
-  box-shadow: 0 2px 10px var(--blue);
-  transition: 0.1s ease-in-out;
-}
-
-.nav a:active {
-  margin-bottom: 0.3rem;
-  margin-top: 0.2rem;
-  border-bottom: 1px solid var(--light-blue);
-  box-shadow: 0 2px 2px var(--blue);
-  transition: 0.1s ease-in-out;
 }
 </style>

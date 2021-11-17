@@ -6,11 +6,14 @@
     :user="user"
     :loggedInFlag="loggedInFlag"
   ></router-view>
+
+  <social></social>
 </template>
 
 <script>
 import Navigation from './components/Navigation.vue';
 import Autentification from './components/Autentification.vue';
+import Social from './components/Social.vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -55,6 +58,7 @@ export default {
   components: {
     Navigation,
     Autentification,
+    Social,
   },
 };
 </script>
@@ -86,6 +90,7 @@ export default {
 
 html {
   box-sizing: border-box;
+  font-size: 10px;
 }
 
 *,
