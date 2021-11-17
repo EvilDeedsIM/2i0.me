@@ -4,7 +4,7 @@
       <div class="logo"><strong>2i0</strong>me</div>
       <div class="logo-desc">Improve Yourself</div>
     </div>
-    <div class="info">
+    <div class="about-div">
       <div class="about about2">Web dev</div>
       <div class="about about3">Templates</div>
       <div class="about about4">Games</div>
@@ -14,27 +14,26 @@
 
 <script setup></script>
 
-<style>
+<style scoped>
+.line {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 1px;
+  width: 100vw;
+  background-color: #fff;
+}
 .container {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-}
-
-.info {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 13rem;
-  /* height: 6rem; */
 }
 
 .logo-div {
   margin-bottom: 2rem;
+  width: 13.1rem;
 }
 
 .logo {
@@ -52,6 +51,12 @@
 .logo-desc {
   font-size: 1.6rem;
   font-weight: 600;
+}
+
+.about-div {
+  position: relative;
+  width: 13.1rem;
+  min-height: 6rem;
 }
 
 .about {
