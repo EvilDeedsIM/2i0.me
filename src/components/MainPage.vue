@@ -1,13 +1,8 @@
 <template>
   <div class="container">
     <div class="logo-div">
-      <div class="logo"><strong>2i0</strong>me</div>
-      <div class="logo-desc">Improve Yourself</div>
-    </div>
-    <div class="about-div">
-      <div class="about about2">Web dev</div>
-      <div class="about about3">Templates</div>
-      <div class="about about4">Games</div>
+      <div class="logo"><strong>2i0</strong></div>
+      <div class="logo-desc">Improve&nbsp;Yourself</div>
     </div>
   </div>
 </template>
@@ -32,53 +27,31 @@
 }
 
 .logo-div {
-  margin-bottom: 2rem;
-  width: 13.1rem;
+  position: relative;
+  margin-bottom: 4rem;
 }
 
 .logo {
   opacity: 1;
   font-size: 2rem;
-  line-height: 1.5rem;
 }
 
 .logo strong {
-  font-size: 6rem;
+  font-size: 13rem;
   font-weight: 900;
-  line-height: 4rem;
+  line-height: 13rem;
 }
 
 .logo-desc {
-  font-size: 1.6rem;
-  font-weight: 600;
-}
-
-.about-div {
-  position: relative;
-  width: 13.1rem;
-  min-height: 6rem;
-}
-
-.about {
   position: absolute;
-  font-size: 1.6rem;
-  width: 100vw;
-}
-
-.about2 {
-  top: 0;
-  left: 0;
-  border-bottom: 2px solid var(--blue);
-}
-.about3 {
-  top: 2rem;
-  left: 4rem;
-  border-bottom: 2px solid var(--dark-orange);
-}
-
-.about4 {
-  top: 4rem;
-  left: 8rem;
-  border-bottom: 2px solid var(--dark-pink);
+  bottom: 1.35rem;
+  word-spacing: 4px;
+  letter-spacing: 3px;
+  text-shadow: 0 -1px 1px var(--light-gray1);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--dark-gray1);
 }
 </style>
