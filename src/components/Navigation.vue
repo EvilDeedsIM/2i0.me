@@ -1,36 +1,41 @@
 <template>
   <div class="nav">
     <div class="menu" @click="menuToggle">
-      <span>{{ menuText }}</span>
-      <div class="menu-list" v-if="menuFlag">
-        <div class="section main" v-if="$route.path !== '/'">
-          <router-link to="/">Main</router-link>
-        </div>
-        <div class="section main">
-          <router-link to="/">Main</router-link>
-        </div>
-        <div class="section templates">
-          <router-link to="/templates">Templates</router-link>
-        </div>
-        <div class="section contacts">
-          <router-link to="/contacts">Contact&nbsp;ME</router-link>
-        </div>
-        <div class="section games">
-          <router-link to="/games">Games</router-link>
-        </div>
-        <div class="section about">
-          <router-link to="/about">about me</router-link>
-        </div>
+      <transition name="burger" appear>
+        <div>{{ menuText }}</div>
+      </transition>
 
-        <router-link
-          v-if="loggedInFlag"
-          to="/login"
-          @click.prevent="loginLogout"
-          class=""
-        >
-          logout
-        </router-link>
-      </div>
+      <transition name="menu">
+        <div class="menu-list" v-if="menuFlag">
+          <div class="section main" v-if="$route.path !== '/'">
+            <router-link to="/">Main</router-link>
+          </div>
+          <div class="section main">
+            <router-link to="/">Main</router-link>
+          </div>
+          <div class="section templates">
+            <router-link to="/templates">Templates</router-link>
+          </div>
+          <div class="section contacts">
+            <router-link to="/contacts">Contact&nbsp;ME</router-link>
+          </div>
+          <div class="section games">
+            <router-link to="/games">Games</router-link>
+          </div>
+          <div class="section about">
+            <router-link to="/about">about me</router-link>
+          </div>
+
+          <router-link
+            v-if="loggedInFlag"
+            to="/login"
+            @click.prevent="loginLogout"
+            class=""
+          >
+            logout
+          </router-link>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -110,6 +115,7 @@ export default {
   justify-content: center;
   height: 3rem;
   width: 12rem;
+  transform: translateX(-50%);
 }
 
 .section a.active {
@@ -123,6 +129,7 @@ export default {
   width: 15rem;
   height: 3.5rem;
   top: 40px;
+  left: 50%;
 }
 .nav .contacts a {
   font-size: 2rem;
@@ -130,19 +137,19 @@ export default {
 
 .nav .main {
   top: -30px;
-  left: 0;
+  left: calc(50% - 160px);
 }
 .nav .templates {
   top: 5px;
-  left: 40px;
+  left: calc(50% - 90px);
 }
 .nav .games {
   top: 5px;
-  right: 40px;
+  left: calc(50% + 90px);
 }
 .nav .about {
   top: -30px;
-  right: 0;
+  left: calc(50% + 160px);
 }
 
 .nav a {
@@ -152,5 +159,39 @@ export default {
   font-size: 1.5rem;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.menu-enter-from {
+  opacity: 0;
+  transform: translateY(-120px);
+}
+
+.menu-leave-to {
+  opacity: 0;
+  transform: translateY(-120px);
+}
+
+.menu-enter-active,
+.menu-leave-active {
+  transition: 0.5s ease-out;
+}
+
+.burger {
+  opacity: 1;
+}
+
+.burger-enter-from {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.burger-leave-to {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.burger-enter-active,
+.burger-leave-active {
+  transition: 2s ease-out;
 }
 </style>
