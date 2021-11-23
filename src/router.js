@@ -10,6 +10,7 @@ import Templates from './views/Templates.vue';
 import Contacts from './views/Contacts.vue';
 import Games from './views/Games.vue';
 import About from './views/About.vue';
+import Apps from './views/Apps.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,6 +26,7 @@ const router = createRouter({
     { path: '/contacts', component: Contacts },
     { path: '/games', component: Games },
     { path: '/about', component: About },
+    { path: '/apps', component: Apps },
   ],
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',
