@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Enemy from './reaction_game_parts/Enemy.vue';
+import Enemy from '../components/reaction_game_parts/Enemy.vue';
 
 export default {
   inheritAttrs: false,

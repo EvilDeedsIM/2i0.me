@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Breath from './components/Breath.vue';
-import AppTo35 from './components/AppTo35.vue';
-import Focus from './components/Focus.vue';
-import Timer from './components/Timer.vue';
+import Breath from './views/Breath.vue';
+import AppTo35 from './views/AppTo35.vue';
+import Focus from './views/Focus.vue';
+import Timer from './views/Timer.vue';
 import Autentification from './components/Autentification.vue';
-import ReactionGame from './components/ReactionGame.vue';
-import MainPage from './components/MainPage.vue';
-import Apps from './components/Apps.vue';
+import ReactionGame from './views/ReactionGame.vue';
+import MainPage from './views/MainPage.vue';
+import Apps from './views/Apps.vue';
 
 const router = createRouter({
   history: createWebHistory(),
