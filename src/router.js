@@ -6,19 +6,25 @@ import Timer from './components/Timer.vue';
 import Autentification from './components/Autentification.vue';
 import ReactionGame from './components/ReactionGame.vue';
 import MainPage from './components/MainPage.vue';
-import Apps from './components/Apps.vue';
+import Templates from './components/Templates.vue';
+import Contacts from './components/Contacts.vue';
+import Games from './components/Games.vue';
+import About from './components/About.vue';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', component: MainPage },
     { path: '/to35', component: AppTo35 },
-    { path: '/apps', component: Apps },
+    { path: '/templates', component: Templates },
     { path: '/breath', component: Breath },
     { path: '/focus', component: Focus },
     { path: '/timer', component: Timer },
     { path: '/login', component: Autentification },
     { path: '/reactiongame', component: ReactionGame },
+    { path: '/contacts', component: Contacts },
+    { path: '/games', component: Games },
+    { path: '/about', component: About },
   ],
   linkActiveClass: 'active',
   linkExactActiveClass: 'active',

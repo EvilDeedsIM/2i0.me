@@ -6,14 +6,16 @@
     :user="user"
     :loggedInFlag="loggedInFlag"
   ></router-view>
-
+  <div class="test"></div>
   <social></social>
+  <Background />
 </template>
 
 <script>
 import Navigation from './components/Navigation.vue';
 import Autentification from './components/Autentification.vue';
 import Social from './components/Social.vue';
+import Background from './components/Background.vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -59,6 +61,7 @@ export default {
     Navigation,
     Autentification,
     Social,
+    Background,
   },
 };
 </script>

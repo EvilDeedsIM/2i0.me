@@ -6,18 +6,22 @@
         <div class="section main" v-if="$route.path !== '/'">
           <router-link to="/">Main</router-link>
         </div>
-
-        <div class="section works">
-          <router-link to="/works">Works</router-link>
+        <div class="section main">
+          <router-link to="/">Main</router-link>
+        </div>
+        <div class="section templates">
+          <router-link to="/templates">Templates</router-link>
+        </div>
+        <div class="section contacts">
+          <router-link to="/contacts">Contact&nbsp;ME</router-link>
         </div>
         <div class="section games">
           <router-link to="/games">Games</router-link>
         </div>
-        <div class="section apps">
-          <router-link to="/apps">Apps</router-link>
+        <div class="section about">
+          <router-link to="/about">about me</router-link>
         </div>
-        
-        <!-- <router-link to="/reactiongame">Reaction&nbsp;Game</router-link> -->
+
         <router-link
           v-if="loggedInFlag"
           to="/login"
@@ -95,19 +99,50 @@ export default {
   align-items: center;
   flex-flow: row wrap;
   top: 120%;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .section {
-  position: relative;
-  border: 1px solid var(--dark-gray2);
-  box-shadow: 0 0 10px (--dark-gray2);
-  border-radius: .5rem;
+  position: absolute;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 3rem;
-  width: 9rem;
+  width: 12rem;
+}
+
+.section a.active {
+  width: 100%;
+  text-align: center;
+  border-left: 1px solid var(--light-gray1);
+  border-right: 1px solid var(--light-gray1);
+}
+
+.nav .contacts {
+  width: 15rem;
+  height: 3.5rem;
+  top: 40px;
+}
+.nav .contacts a {
+  font-size: 2rem;
+}
+
+.nav .main {
+  top: -30px;
+  left: 0;
+}
+.nav .templates {
+  top: 5px;
+  left: 40px;
+}
+.nav .games {
+  top: 5px;
+  right: 40px;
+}
+.nav .about {
+  top: -30px;
+  right: 0;
 }
 
 .nav a {
