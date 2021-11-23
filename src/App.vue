@@ -13,7 +13,7 @@
 
 <script>
 import Navigation from './components/Navigation.vue';
-import Autentification from './components/Autentification.vue';
+import Autentification from './views/Autentification.vue';
 import Social from './components/Social.vue';
 import Background from './components/Background.vue';
 import { mapGetters, mapActions } from 'vuex';

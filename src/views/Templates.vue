@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import Template from './Template.vue';
+import Template from '../components/Template.vue';
 </script>
 
 <style scoped>
