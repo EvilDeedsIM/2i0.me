@@ -1,12 +1,10 @@
 <template>
   <navigation @logged-out="logout" :loggedInFlag="loggedInFlag"></navigation>
-
   <router-view
     @auth-user="authUser"
     :user="user"
     :loggedInFlag="loggedInFlag"
   ></router-view>
-  <div class="test"></div>
   <social></social>
   <Background />
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="logo-div">
-      <div class="logo"><strong>2i0</strong></div>
+      <div class="logo">2i0</div>
       <div class="logo-desc">Improve&nbsp;Yourself</div>
     </div>
   </div>
@@ -10,48 +10,34 @@
 <script setup></script>
 
 <style scoped>
-.line {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 1px;
-  width: 100vw;
-  background-color: #fff;
-}
 .container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .logo-div {
   position: relative;
-  margin-bottom: 4rem;
 }
 
 .logo {
   opacity: 1;
   font-size: 2rem;
-}
-
-.logo strong {
-  font-size: 13rem;
+  font-size: 10rem;
   font-weight: 900;
-  line-height: 13rem;
+  line-height: 10rem;
 }
 
 .logo-desc {
   position: absolute;
-  bottom: 1.35rem;
+  bottom: -0.3rem;
   word-spacing: 4px;
   letter-spacing: 3px;
-  text-shadow: 0 -1px 1px var(--light-gray1);
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   font-weight: 900;
-  color: var(--dark-gray1);
+  color: var(--white);
 }
 </style>
