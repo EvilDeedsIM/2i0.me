@@ -1,5 +1,12 @@
 <template>
-  <navigation @logged-out="logout" :loggedInFlag="loggedInFlag"></navigation>
+  <navigation
+    @logged-out="logout"
+    :loggedInFlag="loggedInFlag"
+    v-if="$route.path === '/'"
+  ></navigation>
+  <router-link to="/" v-else class="link-home">
+    <Icon class="icon" icon="ant-design:home-outlined" />
+  </router-link>
   <router-view
     @auth-user="authUser"
     :user="user"
@@ -15,6 +22,7 @@ import Autentification from './views/Autentification.vue';
 import Social from './components/Social.vue';
 import Background from './components/Background.vue';
 import { mapGetters, mapActions } from 'vuex';
+import { Icon } from '@iconify/vue';
 
 export default {
   inheritAttrs: false,
@@ -60,6 +68,7 @@ export default {
     Autentification,
     Social,
     Background,
+    Icon,
   },
 };
 </script>
@@ -130,5 +139,14 @@ h2 {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+}
+
+.link-home {
+  position: absolute;
+  top: 5px;
+  width: 20px;
+  height: 20px;
+  font-size: 2rem;
+  color: var(--white);
 }
 </style>

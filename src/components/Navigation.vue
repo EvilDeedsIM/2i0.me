@@ -78,7 +78,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue';
-import { ref, defineProps, defineEmits, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
   loggedInFlag: Boolean,

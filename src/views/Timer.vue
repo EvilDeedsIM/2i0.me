@@ -1,8 +1,11 @@
 <template>
   <div class="total" v-if="loggedInFlag">
     <p class="text-right">Timers: {{ timers }}&nbsp;|&nbsp;</p>
-    <p>Total time: {{ totalTime }}</p>
+    <p>Total time: {{ totalTime }}&nbsp;|&nbsp;</p>
+    <p>Today timers: {{ todayTimers }}&nbsp;|&nbsp;</p>
+    <p>Today time: {{ todayTime }}</p>
   </div>
+
   <div class="time">
     <div class="minutes-div">
       <Icon
@@ -11,7 +14,7 @@
         @click="addTime('min')"
         v-if="!hidden"
       />
-      <span class="minutes">{{ time.min }}</span>
+      <span class="minutes">{{ time.min }}{{ time.sec }}</span>
       <Icon
         class="icon icon-min-down"
         icon="ci:chevron-duo-down"
@@ -19,20 +22,15 @@
         v-if="!hidden"
       />
     </div>
-
-    <div class="user">
-      <div v-if="Object.keys(timers).length">
-        <p>Total timers: {{ timers.count }}</p>
-        <p>Total time spent: {{ timers.time }}</p>
-      </div>
-    </div>
   </div>
+
   <div class="buttons">
     <button class="btn btn-play-pause" @click="playPause">
       {{ playPauseButtonText }}
     </button>
     <button class="btn btn-stop" @click="stopBtn">Stop</button>
   </div>
+
   <div class="audio">
     <h3 class="audio-title">Sound</h3>
     <div class="audio-choose">
@@ -90,6 +88,8 @@ export default {
 
       timers: 0,
       totalTime: 0,
+      todayTimers: 0,
+      todayTime: 0,
       timersUrl: `https://i0me-ae237-default-rtdb.europe-west1.firebasedatabase.app/users/${this.user.id}/timers.json`,
     };
   },
@@ -112,6 +112,22 @@ export default {
       if (data) {
         const allTimers = Object.values(data);
 
+        // * Get todays timers
+        allTimers.forEach((el) => {
+          let time = parseInt(el.title.split('-')[1]);
+          let date = new Date(time);
+          let todayDate = new Date();
+
+          if (
+            date.getDate() === todayDate.getDate() &&
+            date.getMonth() === todayDate.getMonth() &&
+            date.getFullYear() === todayDate.getFullYear()
+          ) {
+            this.todayTimers++;
+            this.todayTime += el.time;
+          }
+        });
+
         this.totalTime = allTimers.reduce((acc, obj) => acc + obj.time, 0);
 
         this.timers = allTimers.length;
@@ -119,7 +135,8 @@ export default {
     },
 
     playPause() {
-      // Restart
+      // * Restart
+
       if (this.timeToGo === 0) {
         this.timeToGo = this.minutesToGo * this.oneMinute;
 
@@ -132,7 +149,7 @@ export default {
         return;
       }
 
-      // Play
+      // * Play
       if (!this.runFlag) {
         this.timeToGo = this.minutesToGo * this.oneMinute;
         this.runFlag = true;
@@ -143,7 +160,7 @@ export default {
         return;
       }
 
-      // Pause
+      // * Pause
       clearInterval(this.interval);
       this.pauseFlag = true;
       this.runFlag = false;
@@ -268,7 +285,7 @@ export default {
 
         return {
           min,
-          sec,
+          sec: `:${sec}`,
         };
       }
 
