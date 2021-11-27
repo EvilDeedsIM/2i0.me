@@ -110,6 +110,9 @@ export default {
     async loadTimersCount() {
       const { data } = await axios.get(this.timersUrl);
       if (data) {
+        this.todayTimers = 0;
+        this.todayTime = 0;
+
         const allTimers = Object.values(data);
 
         // * Get todays timers
